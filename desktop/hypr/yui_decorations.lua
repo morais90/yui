@@ -11,6 +11,13 @@ hl.window_rule({
     center = true,
 })
 
+-- Terminals ask for odd sizes when floating: give them a comfortable default
+hl.window_rule({
+    name  = "terminal-size",
+    match = { class = "^(kitty|com\\.mitchellh\\.ghostty|foot|Alacritty|org\\.wezfurlong\\.wezterm)$" },
+    size  = { 1100, 700 },
+})
+
 ------------------ TITLE BARS (hyprbars) ------------------
 local HYPRBARS = "/usr/lib/libhyprbars.so"
 
@@ -25,6 +32,9 @@ if not file_exists(HYPRBARS) then
 end
 
 hl.plugin.load(HYPRBARS)
+if not hl.plugin.hyprbars then
+    return  -- plugin failed to load (or config is only being verified)
+end
 
 hl.config({
     plugin = {
