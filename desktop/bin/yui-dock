@@ -1,0 +1,4 @@
+#!/bin/bash
+# Starts the Yui dock and window switcher (Quickshell).
+# YUI_DOCK_DIR points to a development checkout when set.
+exec qs -p "${YUI_DOCK_DIR:-/usr/share/yui/dock}" "$@"

@@ -24,6 +24,5 @@ case "$1" in
     device) echo "$dev" ;;
     status) brightnessctl -d "$dev" -m | awk -F, '{print $4}' | tr -d '%' ;;
     -s|-r)  brightnessctl -d "$dev" "$@" ;;
-    *)      brightnessctl -d "$dev" -e4 -n2 set "$1" >/dev/null
-            pkill -RTMIN+8 waybar 2>/dev/null || true ;;  # refresh Waybar module
+    *)      brightnessctl -d "$dev" -e4 -n2 set "$1" >/dev/null ;;
 esac

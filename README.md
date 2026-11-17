@@ -12,20 +12,24 @@ Yui is distributed as **Arch packages** (`yui-*`). A machine running Yui does no
 | Package | Contents |
 |---|---|
 | `yui-base` | Network, audio, Bluetooth and base tools |
-| `yui-desktop` | Hyprland plus Yui's defaults in `/usr/share/yui`, Waybar, lock/idle, `yui-*` scripts |
+| `yui-shell` | The Yui Shell: bar, launcher, dashboard, notifications, OSD, lock screen, wallpaper and dynamic colors (fork of Caelestia) |
+| `yui-cli` | Shell control, color schemes, wallpapers, screenshots (fork of the Caelestia CLI) |
+| `yui-desktop` | Hyprland plus Yui's defaults in `/usr/share/yui`, the Yui dock and window switcher, idle, `yui-*` scripts |
 | `yui-nvidia` | NVIDIA GPU support |
 
 Defaults live in `/usr/share/yui`. User configs in `~/.config` always take precedence:
 
 - `~/.config/hypr/hyprland.lua` loads `/usr/share/yui/hypr/yui.lua`, then applies the user's overrides.
-- Waybar, hyprlock, hypridle and hyprpaper use the user's config if it exists, otherwise Yui's.
+- hypridle and Ghostty use the user's config if it exists, otherwise Yui's.
 
 ## Repository layout
 
 | Folder | Contents |
 |---|---|
-| `desktop/` | Files installed by `yui-desktop` (configs, scripts, service drop-ins) |
-| `pkgs/` | One `PKGBUILD` per package |
+| `shell/` | Yui Shell, imported from [Caelestia shell](https://github.com/caelestia-dots/shell) (GPL-3.0) |
+| `cli/` | Yui CLI, imported from [Caelestia CLI](https://github.com/caelestia-dots/cli) (GPL-3.0) |
+| `desktop/` | Files installed by `yui-desktop` (configs, scripts, the dock in `desktop/dock`) |
+| `pkgs/` | One `PKGBUILD` per Yui package; `pkgs/third-party` holds reviewed recipes for dependencies outside the official repos |
 | `iso/` | (planned) archiso profile |
 | `docs/` | Documentation and design decisions |
 
@@ -43,11 +47,10 @@ yui-setup          # prepares the user's ~/.config (--reset restores Yui's defau
 |---|---|
 | `yui-setup` | Creates the user's `hyprland.lua` pointing to Yui's defaults |
 | `yui-brightness` | Internal display brightness (picks the right device on hybrid laptops) |
-| `yui-lock` | Locks the screen |
-| `yui-power-menu` | Power menu |
+| `yui-lock` | Locks the screen (Yui Shell lock screen) |
 | `yui-minimize` | Minimize / restore windows (Hyprland has no native minimize) |
-| `yui-shell` | Starts the Yui Shell (dock, window switcher) |
-| `yui-waybar`, `yui-config-run` | Choose between the user's config and Yui's default |
+| `yui-dock` | Starts the Yui dock and window switcher |
+| `yui-config-run` | Chooses between the user's config and Yui's default |
 
 ## Windows
 
@@ -57,31 +60,34 @@ to maximize.
 
 ## Yui Shell
 
-The dock and the window switcher are built with [Quickshell](https://quickshell.org) (QML),
-in `desktop/shell`, and run as the `yui-shell` user service.
+The desktop interface is built with [Quickshell](https://quickshell.org) (QML) on top of
+[Caelestia](https://github.com/caelestia-dots/shell), imported into `shell/` and `cli/` with
+`git subtree` so upstream fixes can be pulled in:
+
+```bash
+git subtree pull --prefix=shell caelestia-shell main --squash
+git subtree pull --prefix=cli caelestia-cli main --squash
+```
+
+It provides the bar, launcher (tap `Super`), dashboard, notifications sidebar, on-screen
+displays, session menu, lock screen and wallpaper-based colors. It runs as the `yui-shell`
+user service (`qs -c caelestia`).
+
+Yui adds, in `desktop/dock` (`yui-dock` service):
 
 - **Dock**: pinned and running apps, magnification on hover, launch bounce, running/focused
   indicators. Minimized windows appear on the right with a thumbnail: left click restores,
   right click closes.
 - **Window switcher**: `Alt+Tab` / `Alt+Shift+Tab` show live previews of every window, most
   recent first. Release `Alt` or click a preview to switch; `Esc` cancels.
-- **IPC**: `qs -p /usr/share/yui/shell ipc call switcher next|prev|commit|cancel`, the entry
+- **IPC**: `qs -p /usr/share/yui/dock ipc call switcher next|prev|commit|cancel`, the entry
   point for scripts and the future AI layer.
-
-Development: `YUI_SHELL_DIR=~/code/yui/desktop/shell` (systemd drop-in) runs the shell from
-the checkout with hot reload.
-
-## Terminal
-
-**Ghostty** is the default terminal (set in `/etc/xdg/xdg-terminals.list`, used by `xdg-terminal-exec`),
-themed with Catppuccin Mocha. `Ctrl+C` copies when text is selected (otherwise it interrupts the
-running command) and `Ctrl+V` pastes. Personal settings go in `~/.config/ghostty/custom.ghostty`.
 
 ## Session startup
 
 The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens in three layers:
 
-1. **systemd user services**: waybar, hyprpaper, hypridle, hyprpolkitagent
+1. **systemd user services**: yui-shell, yui-dock, hypridle, hyprpolkitagent
 2. **`/etc/xdg/autostart`** (run by uwsm): nm-applet, blueman-applet
 3. **`hl.on("hyprland.start")`** in `yui.lua`: cliphist
 
@@ -89,7 +95,10 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 
 | Keybind | Action |
 |---|---|
-| `Super+Q` / `Super+R` / `Super+E` | Terminal / launcher / file manager |
+| `Super` (tap) or `Super+R` | Launcher |
+| `Super+Q` / `Super+E` | Terminal / file manager |
+| `Super+N` / `Super+K` | Notifications sidebar / all panels |
+| `Ctrl+Alt+Del` | Session menu (lock, log out, reboot, shut down) |
 | `Super+C` | Close window |
 | `Super+V` | Toggle floating / tiling for a window |
 | `Super+L` | Lock screen |
@@ -108,8 +117,10 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] Automatic brightness device detection (no per-machine config)
 - [x] Floating windows with title bars (minimize, maximize, close)
 - [x] Yui Shell phase 1: dock and window switcher (Quickshell)
-- [ ] Yui Shell phase 2: overview + search (Mission Control / Spotlight)
-- [ ] Yui Shell phase 3: top bar replaces Waybar
+- [x] Yui Shell based on Caelestia (bar, launcher, dashboard, notifications, lock)
+- [ ] Port the dock and window switcher into the Yui Shell's visual language
+- [ ] Overview + search (Mission Control / Spotlight)
+- [ ] Rebrand the shell (names, colors, identity)
 - [ ] Yui pacman repository (GitHub Releases + Actions), including hyprbars from AUR
 - [ ] btrfs snapshots (snapper, snap-pac, grub-btrfs)
 - [ ] Test installation in a VM
@@ -118,4 +129,7 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 
 ## License
 
-[MIT](LICENSE)
+Yui is [MIT](LICENSE), **except** `shell/` and `cli/`, which are derived from
+[Caelestia](https://github.com/caelestia-dots) by soramane and contributors and remain under
+the GPL-3.0 (see `shell/LICENSE` and `cli/LICENSE`). Packages in `pkgs/third-party` keep their
+upstream licenses.

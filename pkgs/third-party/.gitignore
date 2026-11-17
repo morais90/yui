@@ -1,0 +1,6 @@
+# Build artifacts: keep only the recipes
+*/*
+!*/PKGBUILD
+!*/*.hook
+!*/*.install
+!README.md

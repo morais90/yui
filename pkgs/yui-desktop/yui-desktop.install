@@ -1,4 +1,6 @@
-_user_units="waybar.service hyprpaper.service hypridle.service hyprpolkitagent.service yui-shell.service"
+_user_units="hypridle.service hyprpolkitagent.service yui-shell.service yui-dock.service"
+# Replaced by the Yui Shell (Caelestia fork) in 0.4.0
+_old_units="waybar.service hyprpaper.service"
 
 post_install() {
     systemctl --global enable $_user_units >/dev/null 2>&1
@@ -7,6 +9,7 @@ post_install() {
 }
 
 post_upgrade() {
+    systemctl --global disable $_old_units >/dev/null 2>&1
     systemctl --global enable $_user_units >/dev/null 2>&1
 }
 

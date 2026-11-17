@@ -1,12 +1,12 @@
 [Unit]
-Description=Yui Shell (dock and window switcher)
+Description=Yui Shell (bar, launcher, dashboard, notifications, lock)
 Documentation=https://github.com/morais90/yui
 PartOf=graphical-session.target
 After=graphical-session.target
 ConditionEnvironment=WAYLAND_DISPLAY
 
 [Service]
-ExecStart=/usr/bin/yui-shell
+ExecStart=/usr/bin/qs -c caelestia -n
 Restart=on-failure
 RestartSec=2
 Slice=app-graphical.slice

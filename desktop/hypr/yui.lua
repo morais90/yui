@@ -23,7 +23,6 @@ hl.monitor({
 -- Set programs that you use
 local terminal    = "xdg-terminal-exec"
 local fileManager = "dolphin"
-local menu = "hyprlauncher"
 
 
 -------------------
@@ -32,9 +31,9 @@ local menu = "hyprlauncher"
 
 -- See https://wiki.hypr.land/configuring/core/autostart/
 
--- Waybar, hyprpaper, hypridle and the polkit agent run as systemd user services
--- (started by uwsm via graphical-session.target). nm-applet and blueman-applet
--- are started from /etc/xdg/autostart by uwsm.
+-- The Yui Shell, Yui dock, hypridle and the polkit agent run as systemd user
+-- services (started by uwsm via graphical-session.target). nm-applet and
+-- blueman-applet are started from /etc/xdg/autostart by uwsm.
 hl.on("hyprland.start", function ()
     hl.exec_cmd("uwsm app -- wl-paste --type text --watch cliphist store")
     hl.exec_cmd("uwsm app -- wl-paste --type image --watch cliphist store")
@@ -257,7 +256,6 @@ local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 

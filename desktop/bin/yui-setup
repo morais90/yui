@@ -39,8 +39,7 @@ fi
 
 # Configs that override Yui's defaults (only with --reset)
 if [[ "${1:-}" == "--reset" ]]; then
-    for f in hypridle.conf hyprlock.conf hyprpaper.conf; do move_to_backup "$config/hypr/$f"; done
-    move_to_backup "$config/waybar"
+    move_to_backup "$config/hypr/hypridle.conf"
     for f in "$config/hypr"/*.lua; do
         [[ "$(basename "$f")" == "hyprland.lua" ]] || move_to_backup "$f"
     done

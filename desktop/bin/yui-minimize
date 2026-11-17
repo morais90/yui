@@ -4,10 +4,8 @@
 # Usage:
 #   yui-minimize            minimize the active window
 #   yui-minimize restore    pick a minimized window (wofi) and bring it back
-#   yui-minimize count      number of minimized windows (for Waybar)
+#   yui-minimize count      number of minimized windows
 WS="special:minimized"
-
-refresh_bar() { pkill -RTMIN+9 waybar 2>/dev/null || true; }
 
 minimized() {
     hyprctl clients -j | jq -r --arg ws "$WS" \
@@ -16,8 +14,7 @@ minimized() {
 
 case "${1:-}" in
     "")
-        hyprctl dispatch "hl.dsp.window.move({ workspace = \"$WS\", follow = false })" >/dev/null
-        refresh_bar ;;
+        hyprctl dispatch "hl.dsp.window.move({ workspace = \"$WS\", follow = false })" >/dev/null ;;
     count)
         minimized | grep -c . || true ;;
     restore)
@@ -32,8 +29,7 @@ case "${1:-}" in
         addr=$(cut -f1 <<<"$choice")
         ws=$(hyprctl activeworkspace -j | jq -r '.id')
         hyprctl dispatch "hl.dsp.window.move({ window = \"address:$addr\", workspace = \"$ws\" })" >/dev/null
-        hyprctl dispatch "hl.dsp.focus({ window = \"address:$addr\" })" >/dev/null
-        refresh_bar ;;
+        hyprctl dispatch "hl.dsp.focus({ window = \"address:$addr\" })" >/dev/null ;;
     *)
         echo "usage: yui-minimize [restore|count]" >&2; exit 1 ;;
 esac

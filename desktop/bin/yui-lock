@@ -1,5 +1,3 @@
 #!/bin/bash
-# Locks the screen with hyprlock (single instance), using the user's or Yui's config.
-pidof hyprlock >/dev/null && exit 0
-exec yui-config-run "${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprlock.conf" \
-    /usr/share/yui/hypr/hyprlock.conf hyprlock
+# Locks the screen with the Yui Shell lock screen.
+exec qs -c caelestia ipc call lock lock

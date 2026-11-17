@@ -1,8 +1,8 @@
 # Maintainer: Willian Morais
 pkgname=yui-desktop
-pkgver=0.3.0
+pkgver=0.4.0
 pkgrel=1
-pkgdesc="Yui desktop: Hyprland defaults, Yui Shell (dock, switcher), Waybar, lock/idle, helper scripts"
+pkgdesc="Yui desktop: Hyprland defaults, Yui dock and window switcher, idle, helper scripts"
 arch=('any')
 url="https://github.com/morais90/yui"
 license=('MIT')
@@ -10,9 +10,8 @@ depends=(
     # session
     hyprland uwsm sddm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
     hyprpolkitagent qt5-wayland qt6-wayland
-    # shell components
-    waybar hyprpaper hypridle hyprlock hyprlauncher wofi dunst
-    quickshell
+    # shell: Yui Shell (Caelestia fork) + Yui dock
+    yui-shell quickshell-git hypridle wofi
     network-manager-applet blueman pavucontrol
     # tools used by keybinds and scripts
     ghostty xdg-terminal-exec dolphin grim slurp wl-clipboard cliphist brightnessctl playerctl
@@ -29,7 +28,6 @@ package() {
     local src="$startdir/../../desktop"
     install -Dm755 -t "$pkgdir/usr/bin"                   "$src"/bin/*
     install -Dm644 -t "$pkgdir/usr/share/yui/hypr"        "$src"/hypr/*
-    install -Dm644 -t "$pkgdir/usr/share/yui/waybar"      "$src"/waybar/*
     install -Dm644 -t "$pkgdir/usr/share/yui/ghostty"     "$src"/ghostty/*
     install -Dm644 -t "$pkgdir/usr/share/yui/skel"        "$src"/skel/hyprland.lua
     install -Dm644 -t "$pkgdir/usr/share/yui/skel/ghostty" "$src"/skel/ghostty/config.ghostty
@@ -37,8 +35,8 @@ package() {
     install -Dm644 "$src/skel/ghostty/config.ghostty"     "$pkgdir/etc/skel/.config/ghostty/config.ghostty"
     install -Dm644 "$src/xdg/xdg-terminals.list"          "$pkgdir/etc/xdg/xdg-terminals.list"
     install -Dm644 -t "$pkgdir/usr/lib/systemd/user"      "$src"/systemd/user/*.service
-    install -dm755 "$pkgdir/usr/share/yui/shell"
-    cp -r "$src"/shell/. "$pkgdir/usr/share/yui/shell/"
+    install -dm755 "$pkgdir/usr/share/yui/dock"
+    cp -r "$src"/dock/. "$pkgdir/usr/share/yui/dock/"
     local unit
     for unit in "$src"/systemd/user/*.service.d; do
         install -Dm644 -t "$pkgdir/usr/lib/systemd/user/$(basename "$unit")" "$unit"/*
