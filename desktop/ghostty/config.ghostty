@@ -1,0 +1,25 @@
+# Yui default Ghostty config.
+# Installed to /usr/share/yui/ghostty. Do not edit: put your changes in
+# ~/.config/ghostty/custom.ghostty (loaded after this file, so it wins).
+
+# Look
+theme = Catppuccin Mocha
+font-family = JetBrainsMono Nerd Font
+font-size = 11
+background-opacity = 0.95
+window-padding-x = 10
+window-padding-y = 8
+cursor-style = bar
+
+# Yui draws the title bar (hyprbars), so Ghostty doesn't need its own
+gtk-titlebar = false
+
+# Copy/paste like other desktop apps:
+# Ctrl+C copies when text is selected, otherwise it interrupts the running command.
+# Ctrl+V pastes. Ctrl+Shift+C / Ctrl+Shift+V keep working as usual.
+keybind = performable:ctrl+c=copy_to_clipboard
+keybind = ctrl+v=paste_from_clipboard
+copy-on-select = clipboard
+
+# Ask before closing only when a command is still running
+confirm-close-surface = true

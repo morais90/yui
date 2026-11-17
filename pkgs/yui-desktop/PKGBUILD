@@ -1,6 +1,6 @@
 # Maintainer: Willian Morais
 pkgname=yui-desktop
-pkgver=0.1.0
+pkgver=0.2.0
 pkgrel=1
 pkgdesc="Yui desktop: Hyprland defaults, Waybar, lock/idle, helper scripts"
 arch=('any')
@@ -14,7 +14,7 @@ depends=(
     waybar hyprpaper hypridle hyprlock hyprlauncher wofi dunst
     network-manager-applet blueman pavucontrol
     # tools used by keybinds and scripts
-    kitty dolphin grim slurp wl-clipboard cliphist brightnessctl playerctl
+    ghostty xdg-terminal-exec dolphin grim slurp wl-clipboard cliphist brightnessctl playerctl
     xdg-user-dirs xdg-utils jq
     # title bars (AUR for now; will be built into the Yui repository)
     hyprland-plugin-hyprbars
@@ -29,8 +29,12 @@ package() {
     install -Dm755 -t "$pkgdir/usr/bin"                   "$src"/bin/*
     install -Dm644 -t "$pkgdir/usr/share/yui/hypr"        "$src"/hypr/*
     install -Dm644 -t "$pkgdir/usr/share/yui/waybar"      "$src"/waybar/*
+    install -Dm644 -t "$pkgdir/usr/share/yui/ghostty"     "$src"/ghostty/*
     install -Dm644 -t "$pkgdir/usr/share/yui/skel"        "$src"/skel/hyprland.lua
+    install -Dm644 -t "$pkgdir/usr/share/yui/skel/ghostty" "$src"/skel/ghostty/config.ghostty
     install -Dm644 "$src/skel/hyprland.lua"               "$pkgdir/etc/skel/.config/hypr/hyprland.lua"
+    install -Dm644 "$src/skel/ghostty/config.ghostty"     "$pkgdir/etc/skel/.config/ghostty/config.ghostty"
+    install -Dm644 "$src/xdg/xdg-terminals.list"          "$pkgdir/etc/xdg/xdg-terminals.list"
     local unit
     for unit in "$src"/systemd/user/*.service.d; do
         install -Dm644 -t "$pkgdir/usr/lib/systemd/user/$(basename "$unit")" "$unit"/*

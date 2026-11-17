@@ -54,6 +54,12 @@ Windows open **floating** and centered, at the size the app asks for, with a tit
 (hyprbars plugin) holding minimize, maximize and close buttons. Double-click the title bar
 to maximize. Minimized windows show up as a counter in Waybar; click it to restore one.
 
+## Terminal
+
+**Ghostty** is the default terminal (set in `/etc/xdg/xdg-terminals.list`, used by `xdg-terminal-exec`),
+themed with Catppuccin Mocha. `Ctrl+C` copies when text is selected (otherwise it interrupts the
+running command) and `Ctrl+V` pastes. Personal settings go in `~/.config/ghostty/custom.ghostty`.
+
 ## Session startup
 
 The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens in three layers:

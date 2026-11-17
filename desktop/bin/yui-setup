@@ -28,6 +28,15 @@ if ! grep -qs 'require("yui")' "$config/hypr/hyprland.lua"; then
     echo "  created $config/hypr/hyprland.lua"
 fi
 
+# Ghostty: keep the user's file only if it already loads Yui
+if ! grep -qs '/usr/share/yui/ghostty' "$config/ghostty/config.ghostty"; then
+    move_to_backup "$config/ghostty/config.ghostty"
+    move_to_backup "$config/ghostty/config"
+    mkdir -p "$config/ghostty"
+    cp /usr/share/yui/skel/ghostty/config.ghostty "$config/ghostty/config.ghostty"
+    echo "  created $config/ghostty/config.ghostty"
+fi
+
 # Configs that override Yui's defaults (only with --reset)
 if [[ "${1:-}" == "--reset" ]]; then
     for f in hypridle.conf hyprlock.conf hyprpaper.conf; do move_to_backup "$config/hypr/$f"; done

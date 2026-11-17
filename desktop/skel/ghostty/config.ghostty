@@ -1,0 +1,5 @@
+# Your Ghostty config.
+# Loads Yui's defaults first, then your own settings from custom.ghostty
+# (create it next to this file; anything there overrides Yui's defaults).
+config-file = /usr/share/yui/ghostty/config.ghostty
+config-file = ?custom.ghostty
