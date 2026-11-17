@@ -1,0 +1,29 @@
+#!/bin/bash
+# Controls the internal display brightness, picking the right backlight device
+# (on hybrid laptops brightnessctl often picks the wrong GPU's device).
+# Usage: yui-brightness +5% | 5%- | status | device | -s <brightnessctl args> | -r
+find_device() {
+    local b t
+    # 1) backlight attached to an internal panel connector
+    for b in /sys/class/backlight/*; do
+        [[ -e "$b" ]] || continue
+        if readlink -f "$b" | grep -qE 'eDP|LVDS|DSI'; then basename "$b"; return; fi
+    done
+    # 2) fall back to the kernel's preferred type order
+    for t in firmware platform raw; do
+        for b in /sys/class/backlight/*; do
+            [[ -e "$b" && "$(cat "$b/type")" == "$t" ]] && { basename "$b"; return; }
+        done
+    done
+}
+
+dev=$(find_device)
+[[ -n "$dev" ]] || { echo "no backlight device found" >&2; exit 1; }
+
+case "$1" in
+    device) echo "$dev" ;;
+    status) brightnessctl -d "$dev" -m | awk -F, '{print $4}' | tr -d '%' ;;
+    -s|-r)  brightnessctl -d "$dev" "$@" ;;
+    *)      brightnessctl -d "$dev" -e4 -n2 set "$1" >/dev/null
+            pkill -RTMIN+8 waybar 2>/dev/null || true ;;  # refresh Waybar module
+esac

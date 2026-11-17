@@ -1,0 +1,36 @@
+# Maintainer: Willian Morais
+pkgname=yui-desktop
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Yui desktop: Hyprland defaults, Waybar, lock/idle, helper scripts"
+arch=('any')
+url="https://github.com/morais90/yui"
+license=('MIT')
+depends=(
+    # session
+    hyprland uwsm sddm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
+    hyprpolkitagent qt5-wayland qt6-wayland
+    # shell components
+    waybar hyprpaper hypridle hyprlock hyprlauncher wofi dunst
+    network-manager-applet blueman pavucontrol
+    # tools used by keybinds and scripts
+    kitty dolphin grim slurp wl-clipboard cliphist brightnessctl playerctl
+    xdg-user-dirs xdg-utils
+    # look and feel
+    ttf-jetbrains-mono-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk
+    papirus-icon-theme nwg-look
+)
+install=yui-desktop.install
+
+package() {
+    local src="$startdir/../../desktop"
+    install -Dm755 -t "$pkgdir/usr/bin"                   "$src"/bin/*
+    install -Dm644 -t "$pkgdir/usr/share/yui/hypr"        "$src"/hypr/*
+    install -Dm644 -t "$pkgdir/usr/share/yui/waybar"      "$src"/waybar/*
+    install -Dm644 -t "$pkgdir/usr/share/yui/skel"        "$src"/skel/hyprland.lua
+    install -Dm644 "$src/skel/hyprland.lua"               "$pkgdir/etc/skel/.config/hypr/hyprland.lua"
+    local unit
+    for unit in "$src"/systemd/user/*.service.d; do
+        install -Dm644 -t "$pkgdir/usr/lib/systemd/user/$(basename "$unit")" "$unit"/*
+    done
+}

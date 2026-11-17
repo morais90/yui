@@ -1,3 +1,4 @@
+/* Yui default Waybar style */
 * { font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif; font-size: 13px; min-height: 0; }
 window#waybar { background: rgba(20, 22, 30, 0.85); color: #d8dee9; }
 #workspaces button { padding: 0 8px; color: #7b8496; border-radius: 6px; }
@@ -6,7 +7,7 @@ window#waybar { background: rgba(20, 22, 30, 0.85); color: #d8dee9; }
 #workspaces button:hover { background: rgba(255,255,255,0.1); }
 #window { padding: 0 10px; color: #aab2c0; }
 #clock { font-weight: bold; }
-#idle_inhibitor, #pulseaudio, #backlight, #network, #bluetooth, #cpu, #memory, #battery, #tray, #custom-power {
+#idle_inhibitor, #pulseaudio, #custom-brightness, #network, #bluetooth, #cpu, #memory, #battery, #tray, #custom-power {
     padding: 0 10px; margin: 4px 0; border-radius: 6px; background: rgba(255,255,255,0.06);
 }
 #idle_inhibitor.activated { color: #ffcc66; }

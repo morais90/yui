@@ -1,0 +1,15 @@
+_user_units="waybar.service hyprpaper.service hypridle.service hyprpolkitagent.service"
+
+post_install() {
+    systemctl --global enable $_user_units >/dev/null 2>&1
+    systemctl enable sddm.service >/dev/null 2>&1
+    echo ">> Yui desktop installed. Each existing user should run: yui-setup"
+}
+
+post_upgrade() {
+    systemctl --global enable $_user_units >/dev/null 2>&1
+}
+
+pre_remove() {
+    systemctl --global disable $_user_units >/dev/null 2>&1
+}

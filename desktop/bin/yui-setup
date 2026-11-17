@@ -1,0 +1,42 @@
+#!/bin/bash
+# Prepares the current user's home for Yui's defaults.
+# - Creates ~/.config/hypr/hyprland.lua that loads /usr/share/yui/hypr/yui.lua
+# - Moves old configs that would shadow Yui's defaults to a backup folder
+# Safe to run more than once.
+set -euo pipefail
+config="${XDG_CONFIG_HOME:-$HOME/.config}"
+backup="$config/yui-backup/$(date +%F_%H-%M-%S)"
+moved=0
+
+move_to_backup() {
+    local path="$1"
+    [[ -e "$path" ]] || return 0
+    mkdir -p "$backup"
+    mv "$path" "$backup/"
+    echo "  moved $path -> $backup/"
+    moved=1
+}
+
+echo "Yui setup for $USER"
+
+# Hyprland: keep the user's file only if it already loads Yui
+if ! grep -qs 'require("yui")' "$config/hypr/hyprland.lua"; then
+    move_to_backup "$config/hypr/hyprland.lua"
+    move_to_backup "$config/hypr/hyprland.conf"
+    mkdir -p "$config/hypr"
+    cp /usr/share/yui/skel/hyprland.lua "$config/hypr/hyprland.lua"
+    echo "  created $config/hypr/hyprland.lua"
+fi
+
+# Configs that override Yui's defaults (only with --reset)
+if [[ "${1:-}" == "--reset" ]]; then
+    for f in hypridle.conf hyprlock.conf hyprpaper.conf; do move_to_backup "$config/hypr/$f"; done
+    move_to_backup "$config/waybar"
+    for f in "$config/hypr"/*.lua; do
+        [[ "$(basename "$f")" == "hyprland.lua" ]] || move_to_backup "$f"
+    done
+fi
+
+xdg-user-dirs-update 2>/dev/null || true
+[[ $moved == 1 ]] && echo "Backup saved in $backup"
+echo "Done. Reload Hyprland (hyprctl reload) or log out and back in."

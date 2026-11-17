@@ -1,0 +1,7 @@
+#!/bin/bash
+# Starts Waybar with the user's config (~/.config/waybar) or Yui's default.
+user_dir="${XDG_CONFIG_HOME:-$HOME/.config}/waybar"
+if [[ -f "$user_dir/config.jsonc" || -f "$user_dir/config" ]]; then
+    exec waybar
+fi
+exec waybar -c /usr/share/yui/waybar/config.jsonc -s /usr/share/yui/waybar/style.css

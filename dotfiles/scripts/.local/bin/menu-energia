@@ -1,9 +1,0 @@
-#!/bin/bash
-op=$(printf "󰌾  Bloquear\n󰤄  Suspender\n󰍃  Sair\n󰜉  Reiniciar\n󰐥  Desligar" | wofi --dmenu --prompt "Energia" --width 250 --height 230 --cache-file /dev/null)
-case "$op" in
-  *Bloquear) loginctl lock-session ;;
-  *Suspender) systemctl suspend ;;
-  *Sair) uwsm stop ;;
-  *Reiniciar) systemctl reboot ;;
-  *Desligar) systemctl poweroff ;;
-esac

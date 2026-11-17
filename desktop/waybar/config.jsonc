@@ -1,3 +1,4 @@
+// Yui default Waybar config (override with ~/.config/waybar/config.jsonc)
 {
     "layer": "top",
     "position": "top",
@@ -5,25 +6,27 @@
     "spacing": 4,
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
     "modules-center": ["clock"],
-    "modules-right": ["idle_inhibitor", "pulseaudio", "backlight", "network", "bluetooth", "cpu", "memory", "battery", "tray", "custom/power"],
+    "modules-right": ["idle_inhibitor", "pulseaudio", "custom/brightness", "network", "bluetooth", "cpu", "memory", "battery", "tray", "custom/power"],
 
     "hyprland/workspaces": { "format": "{id}", "on-scroll-up": "hyprctl dispatch workspace e+1", "on-scroll-down": "hyprctl dispatch workspace e-1" },
     "hyprland/window": { "max-length": 60, "separate-outputs": true },
     "clock": {
         "format": "{:%H:%M}",
-        "format-alt": "{:%A, %d de %B  %H:%M}",
-        "locale": "pt_BR.UTF-8",
+        "format-alt": "{:%A, %d %B  %H:%M}",
         "tooltip-format": "<tt><small>{calendar}</small></tt>"
     },
     "idle_inhibitor": { "format": "{icon}", "format-icons": { "activated": "󰅶", "deactivated": "󰾪" },
-        "tooltip-format-activated": "Bloqueio automático DESLIGADO", "tooltip-format-deactivated": "Bloqueio automático ligado" },
+        "tooltip-format-activated": "Auto-lock OFF", "tooltip-format-deactivated": "Auto-lock on" },
     "pulseaudio": {
         "format": "{icon} {volume}%", "format-muted": "󰝟 mudo",
         "format-icons": { "headphone": "󰋋", "default": ["󰕿", "󰖀", "󰕾"] },
         "on-click": "pavucontrol", "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle", "scroll-step": 5
     },
-    "backlight": { "device": "intel_backlight", "format": "{icon} {percent}%", "format-icons": ["󰃞", "󰃟", "󰃠"],
-        "on-scroll-up": "brightnessctl -d intel_backlight set 5%+", "on-scroll-down": "brightnessctl -d intel_backlight set 5%-" },
+    "custom/brightness": {
+        "exec": "yui-brightness status", "interval": 30, "signal": 8,
+        "format": "{icon} {}%", "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "on-scroll-up": "yui-brightness 5%+", "on-scroll-down": "yui-brightness 5%-"
+    },
     "network": {
         "format-wifi": "󰤨 {essid}", "format-ethernet": "󰈀 cabo", "format-disconnected": "󰤭 offline",
         "tooltip-format": "{ifname} {ipaddr} ({signalStrength}%)", "on-click": "nm-connection-editor"
@@ -37,5 +40,5 @@
         "format-icons": ["󰁺", "󰁼", "󰁾", "󰂀", "󰁹"]
     },
     "tray": { "spacing": 8 },
-    "custom/power": { "format": "󰐥", "tooltip": false, "on-click": "~/.local/bin/menu-energia" }
+    "custom/power": { "format": "󰐥", "tooltip": false, "on-click": "yui-power-menu" }
 }

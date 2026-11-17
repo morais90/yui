@@ -3,3 +3,9 @@
 *.iso
 iso/work/
 iso/out/
+# makepkg output
+pkgs/*/pkg/
+pkgs/*/src/
+*.pkg.tar.zst
+*.pkg.tar.zst.sig
+repo/

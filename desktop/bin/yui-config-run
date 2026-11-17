@@ -1,0 +1,6 @@
+#!/bin/bash
+# Usage: yui-config-run <user-config> <yui-default-config> <program> [args...]
+# Runs the program with the user's config if it exists, otherwise with Yui's default.
+user_conf="$1"; default_conf="$2"; shift 2
+if [[ -f "$user_conf" ]]; then conf="$user_conf"; else conf="$default_conf"; fi
+exec "$@" -c "$conf"

@@ -1,0 +1,10 @@
+# Maintainer: Willian Morais
+pkgname=yui-nvidia
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Yui NVIDIA support (open kernel modules, VA-API)"
+arch=('any')
+url="https://github.com/morais90/yui"
+license=('MIT')
+depends=(nvidia-open-dkms nvidia-utils libva-nvidia-driver)
+# Note: dkms needs the headers of every installed kernel (linux-headers, linux-lts-headers...).
