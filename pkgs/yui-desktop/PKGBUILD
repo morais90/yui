@@ -15,7 +15,9 @@ depends=(
     network-manager-applet blueman pavucontrol
     # tools used by keybinds and scripts
     kitty dolphin grim slurp wl-clipboard cliphist brightnessctl playerctl
-    xdg-user-dirs xdg-utils
+    xdg-user-dirs xdg-utils jq
+    # title bars (AUR for now; will be built into the Yui repository)
+    hyprland-plugin-hyprbars
     # look and feel
     ttf-jetbrains-mono-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk
     papirus-icon-theme nwg-look

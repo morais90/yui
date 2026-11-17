@@ -45,7 +45,14 @@ yui-setup          # prepares the user's ~/.config (--reset restores Yui's defau
 | `yui-brightness` | Internal display brightness (picks the right device on hybrid laptops) |
 | `yui-lock` | Locks the screen |
 | `yui-power-menu` | Power menu |
+| `yui-minimize` | Minimize / restore windows (Hyprland has no native minimize) |
 | `yui-waybar`, `yui-config-run` | Choose between the user's config and Yui's default |
+
+## Windows
+
+Windows open **floating** and centered, at the size the app asks for, with a title bar
+(hyprbars plugin) holding minimize, maximize and close buttons. Double-click the title bar
+to maximize. Minimized windows show up as a counter in Waybar; click it to restore one.
 
 ## Session startup
 
@@ -61,6 +68,7 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 |---|---|
 | `Super+Q` / `Super+R` / `Super+E` | Terminal / launcher / file manager |
 | `Super+C` | Close window |
+| `Super+V` | Toggle floating / tiling for a window |
 | `Super+L` | Lock screen |
 | `Super+F` / `Super+Shift+F` | Fullscreen / maximize |
 | `Super+Shift+arrows` | Move window |
@@ -75,7 +83,8 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 
 - [x] Package model (`yui-base`, `yui-desktop`, `yui-nvidia`)
 - [x] Automatic brightness device detection (no per-machine config)
-- [ ] Yui pacman repository (GitHub Releases + Actions)
+- [x] Floating windows with title bars (minimize, maximize, close)
+- [ ] Yui pacman repository (GitHub Releases + Actions), including hyprbars from AUR
 - [ ] btrfs snapshots (snapper, snap-pac, grub-btrfs)
 - [ ] Test installation in a VM
 - [ ] AI layer

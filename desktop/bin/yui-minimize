@@ -1,0 +1,39 @@
+#!/bin/bash
+# Hyprland has no native minimize: Yui emulates it with a hidden special
+# workspace ("minimized").
+# Usage:
+#   yui-minimize            minimize the active window
+#   yui-minimize restore    pick a minimized window (wofi) and bring it back
+#   yui-minimize count      number of minimized windows (for Waybar)
+WS="special:minimized"
+
+refresh_bar() { pkill -RTMIN+9 waybar 2>/dev/null || true; }
+
+minimized() {
+    hyprctl clients -j | jq -r --arg ws "$WS" \
+        '.[] | select(.workspace.name == $ws) | "\(.address)\t\(.class): \(.title)"'
+}
+
+case "${1:-}" in
+    "")
+        hyprctl dispatch "hl.dsp.window.move({ workspace = \"$WS\", follow = false })" >/dev/null
+        refresh_bar ;;
+    count)
+        minimized | grep -c . || true ;;
+    restore)
+        list=$(minimized)
+        [[ -n "$list" ]] || exit 0
+        if [[ $(grep -c . <<<"$list") -eq 1 ]]; then
+            choice="$list"
+        else
+            choice=$(cut -f2- <<<"$list" | wofi --dmenu --prompt "Restore" --cache-file /dev/null) || exit 0
+            choice=$(grep -F -m1 "$choice" <<<"$list")
+        fi
+        addr=$(cut -f1 <<<"$choice")
+        ws=$(hyprctl activeworkspace -j | jq -r '.id')
+        hyprctl dispatch "hl.dsp.window.move({ window = \"address:$addr\", workspace = \"$ws\" })" >/dev/null
+        hyprctl dispatch "hl.dsp.focus({ window = \"address:$addr\" })" >/dev/null
+        refresh_bar ;;
+    *)
+        echo "usage: yui-minimize [restore|count]" >&2; exit 1 ;;
+esac
