@@ -1,81 +1,86 @@
 # Yui
 
-> Um sistema operacional pessoal baseado em **Arch Linux + Hyprland**, pensado para um dia ser gerenciado 100% por uma IA.
-> Nome inspirado na Yui de *Sword Art Online*: a IA que vive dentro do sistema e cuida de quem o usa.
+> A personal operating system built on **Arch Linux + Hyprland**, designed to one day be managed entirely by an AI.
+> Named after Yui from *Sword Art Online*: the AI that lives inside the system and looks after its users.
 
-Projeto hobby. Começa como dotfiles + script de instalação; no futuro vira uma ISO.
+Hobby project. Yui is shipped as Arch packages; a bootable ISO will come later.
 
-## Como funciona
+## How it works
 
-A Yui é distribuída como **pacotes Arch** (`yui-*`). Uma máquina com a Yui não precisa deste repo: ela só tem os pacotes, atualizados pelo `pacman`.
+Yui is distributed as **Arch packages** (`yui-*`). A machine running Yui does not need this repository: it only has the packages, updated by `pacman`.
 
-| Pacote | Conteúdo |
+| Package | Contents |
 |---|---|
-| `yui-base` | Rede, áudio, Bluetooth e ferramentas básicas |
-| `yui-desktop` | Hyprland e os padrões da Yui em `/usr/share/yui`, Waybar, bloqueio, scripts `yui-*` |
-| `yui-nvidia` | Suporte a GPUs NVIDIA |
+| `yui-base` | Network, audio, Bluetooth and base tools |
+| `yui-desktop` | Hyprland plus Yui's defaults in `/usr/share/yui`, Waybar, lock/idle, `yui-*` scripts |
+| `yui-nvidia` | NVIDIA GPU support |
 
-Os padrões ficam em `/usr/share/yui`. As configs do usuário em `~/.config` sempre têm prioridade:
-- `~/.config/hypr/hyprland.lua` carrega `/usr/share/yui/hypr/yui.lua` e depois aplica as personalizações do usuário.
-- Waybar, hyprlock, hypridle e hyprpaper usam a config do usuário se ela existir; senão, usam a da Yui.
+Defaults live in `/usr/share/yui`. User configs in `~/.config` always take precedence:
 
-## Estrutura do repo
+- `~/.config/hypr/hyprland.lua` loads `/usr/share/yui/hypr/yui.lua`, then applies the user's overrides.
+- Waybar, hyprlock, hypridle and hyprpaper use the user's config if it exists, otherwise Yui's.
 
-| Pasta | Conteúdo |
+## Repository layout
+
+| Folder | Contents |
 |---|---|
-| `desktop/` | Arquivos instalados pelo `yui-desktop` (configs, scripts, ajustes de serviços) |
-| `pkgs/` | `PKGBUILD` de cada pacote |
-| `iso/` | (futuro) perfil archiso |
-| `docs/` | Documentação e decisões |
+| `desktop/` | Files installed by `yui-desktop` (configs, scripts, service drop-ins) |
+| `pkgs/` | One `PKGBUILD` per package |
+| `iso/` | (planned) archiso profile |
+| `docs/` | Documentation and design decisions |
 
-## Compilar e instalar (desenvolvimento)
+## Build and install (development)
 
 ```bash
 cd pkgs/yui-desktop && makepkg -f
 sudo pacman -U yui-desktop-*.pkg.tar.zst
-yui-setup          # prepara o ~/.config do usuário (use --reset para voltar aos padrões)
+yui-setup          # prepares the user's ~/.config (--reset restores Yui's defaults)
 ```
 
 ## Scripts
 
-| Comando | Função |
+| Command | Purpose |
 |---|---|
-| `yui-setup` | Cria o `hyprland.lua` do usuário apontando para os padrões |
-| `yui-brightness` | Brilho da tela interna (escolhe o dispositivo certo em notebooks híbridos) |
-| `yui-lock` | Bloqueia a tela |
-| `yui-power-menu` | Menu de energia |
-| `yui-waybar`, `yui-config-run` | Escolhem entre a config do usuário e a padrão |
+| `yui-setup` | Creates the user's `hyprland.lua` pointing to Yui's defaults |
+| `yui-brightness` | Internal display brightness (picks the right device on hybrid laptops) |
+| `yui-lock` | Locks the screen |
+| `yui-power-menu` | Power menu |
+| `yui-waybar`, `yui-config-run` | Choose between the user's config and Yui's default |
 
-## Como a sessão sobe
+## Session startup
 
-A sessão é **Hyprland (uwsm-managed)** via SDDM. Autostart em 3 camadas:
+The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens in three layers:
 
-1. **Serviços systemd de usuário**: waybar, hyprpaper, hypridle, hyprpolkitagent
-2. **`/etc/xdg/autostart`** (executado pelo uwsm): nm-applet, blueman-applet
-3. **`hl.on("hyprland.start")`** no `hyprland.lua`: cliphist
+1. **systemd user services**: waybar, hyprpaper, hypridle, hyprpolkitagent
+2. **`/etc/xdg/autostart`** (run by uwsm): nm-applet, blueman-applet
+3. **`hl.on("hyprland.start")`** in `yui.lua`: cliphist
 
-## Atalhos principais (`Super` = tecla Windows)
+## Keybinds (`Super` = Windows key)
 
-| Atalho | Ação |
+| Keybind | Action |
 |---|---|
-| `Super+Q` / `Super+R` / `Super+E` | Terminal / lançador / arquivos |
-| `Super+C` | Fechar janela |
-| `Super+L` | Bloquear tela |
-| `Super+F` / `Super+Shift+F` | Tela cheia / maximizar |
-| `Super+Shift+setas` | Mover janela |
-| `Super+Ctrl+setas` | Redimensionar |
-| `Super+Alt+←/→` | Janela para outro monitor |
-| `Alt+Tab` / `Super+Tab` | Alternar janelas / workspace anterior |
-| `Super+G` | Agrupar em abas |
-| `Super+Shift+V` | Histórico da área de transferência |
-| `Print` / `Shift+Print` | Print de área (copia) / tela inteira (salva) |
+| `Super+Q` / `Super+R` / `Super+E` | Terminal / launcher / file manager |
+| `Super+C` | Close window |
+| `Super+L` | Lock screen |
+| `Super+F` / `Super+Shift+F` | Fullscreen / maximize |
+| `Super+Shift+arrows` | Move window |
+| `Super+Ctrl+arrows` | Resize window |
+| `Super+Alt+←/→` | Send window to the other monitor |
+| `Alt+Tab` / `Super+Tab` | Cycle windows / previous workspace |
+| `Super+G` | Group windows into tabs |
+| `Super+Shift+V` | Clipboard history |
+| `Print` / `Shift+Print` | Region screenshot (copy) / full screenshot (save) |
 
-## TODO
+## Roadmap
 
-- [x] Modelo de pacotes (`yui-base`, `yui-desktop`, `yui-nvidia`)
-- [x] Brilho detectado automaticamente (sem config por máquina)
-- [ ] Repositório pacman da Yui (GitHub Releases + Actions)
-- [ ] Snapshots btrfs (snapper, snap-pac, grub-btrfs)
-- [ ] Testar instalação em VM
-- [ ] Camada de IA
-- [ ] ISO com archiso
+- [x] Package model (`yui-base`, `yui-desktop`, `yui-nvidia`)
+- [x] Automatic brightness device detection (no per-machine config)
+- [ ] Yui pacman repository (GitHub Releases + Actions)
+- [ ] btrfs snapshots (snapper, snap-pac, grub-btrfs)
+- [ ] Test installation in a VM
+- [ ] AI layer
+- [ ] ISO with archiso
+
+## License
+
+[MIT](LICENSE)
