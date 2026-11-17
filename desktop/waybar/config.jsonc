@@ -4,17 +4,11 @@
     "position": "top",
     "height": 32,
     "spacing": 4,
-    "modules-left": ["hyprland/workspaces", "custom/minimized", "hyprland/window"],
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
     "modules-center": ["clock"],
     "modules-right": ["idle_inhibitor", "pulseaudio", "custom/brightness", "network", "bluetooth", "cpu", "memory", "battery", "tray", "custom/power"],
 
     "hyprland/workspaces": { "format": "{id}", "on-scroll-up": "hyprctl dispatch workspace e+1", "on-scroll-down": "hyprctl dispatch workspace e-1" },
-    "custom/minimized": {
-        "exec": "yui-minimize count", "interval": 5, "signal": 9,
-        "format": "󰖰 {}", "hide-empty-text": true,
-        "tooltip-format": "Minimized windows (click to restore)",
-        "on-click": "yui-minimize restore"
-    },
     "hyprland/window": { "max-length": 60, "separate-outputs": true },
     "clock": {
         "format": "{:%H:%M}",

@@ -26,9 +26,7 @@ hl.bind(mainMod .. " + CTRL + up",    hl.dsp.window.resize({ x = 0, y = -step, r
 hl.bind(mainMod .. " + ALT + left",  hl.dsp.window.move({ monitor = "l", follow = true }))
 hl.bind(mainMod .. " + ALT + right", hl.dsp.window.move({ monitor = "r", follow = true }))
 
--- Switch windows
-hl.bind("ALT + TAB",         hl.dsp.window.cycle_next())
-hl.bind("ALT + SHIFT + TAB", hl.dsp.window.cycle_next({ next = false }))
+-- Previous workspace (Alt+Tab is handled by the Yui Shell switcher, see yui_shell.lua)
 hl.bind(mainMod .. " + TAB", hl.dsp.focus({ workspace = "previous" }))
 
 -- Pin a floating window on all workspaces / center it

@@ -46,13 +46,30 @@ yui-setup          # prepares the user's ~/.config (--reset restores Yui's defau
 | `yui-lock` | Locks the screen |
 | `yui-power-menu` | Power menu |
 | `yui-minimize` | Minimize / restore windows (Hyprland has no native minimize) |
+| `yui-shell` | Starts the Yui Shell (dock, window switcher) |
 | `yui-waybar`, `yui-config-run` | Choose between the user's config and Yui's default |
 
 ## Windows
 
 Windows open **floating** and centered, at the size the app asks for, with a title bar
 (hyprbars plugin) holding minimize, maximize and close buttons. Double-click the title bar
-to maximize. Minimized windows show up as a counter in Waybar; click it to restore one.
+to maximize.
+
+## Yui Shell
+
+The dock and the window switcher are built with [Quickshell](https://quickshell.org) (QML),
+in `desktop/shell`, and run as the `yui-shell` user service.
+
+- **Dock**: pinned and running apps, magnification on hover, launch bounce, running/focused
+  indicators. Minimized windows appear on the right with a thumbnail: left click restores,
+  right click closes.
+- **Window switcher**: `Alt+Tab` / `Alt+Shift+Tab` show live previews of every window, most
+  recent first. Release `Alt` or click a preview to switch; `Esc` cancels.
+- **IPC**: `qs -p /usr/share/yui/shell ipc call switcher next|prev|commit|cancel`, the entry
+  point for scripts and the future AI layer.
+
+Development: `YUI_SHELL_DIR=~/code/yui/desktop/shell` (systemd drop-in) runs the shell from
+the checkout with hot reload.
 
 ## Terminal
 
@@ -80,7 +97,7 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 | `Super+Shift+arrows` | Move window |
 | `Super+Ctrl+arrows` | Resize window |
 | `Super+Alt+←/→` | Send window to the other monitor |
-| `Alt+Tab` / `Super+Tab` | Cycle windows / previous workspace |
+| `Alt+Tab` / `Super+Tab` | Window switcher / previous workspace |
 | `Super+G` | Group windows into tabs |
 | `Super+Shift+V` | Clipboard history |
 | `Print` / `Shift+Print` | Region screenshot (copy) / full screenshot (save) |
@@ -90,6 +107,9 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] Package model (`yui-base`, `yui-desktop`, `yui-nvidia`)
 - [x] Automatic brightness device detection (no per-machine config)
 - [x] Floating windows with title bars (minimize, maximize, close)
+- [x] Yui Shell phase 1: dock and window switcher (Quickshell)
+- [ ] Yui Shell phase 2: overview + search (Mission Control / Spotlight)
+- [ ] Yui Shell phase 3: top bar replaces Waybar
 - [ ] Yui pacman repository (GitHub Releases + Actions), including hyprbars from AUR
 - [ ] btrfs snapshots (snapper, snap-pac, grub-btrfs)
 - [ ] Test installation in a VM

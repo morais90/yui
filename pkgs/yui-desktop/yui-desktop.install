@@ -1,4 +1,4 @@
-_user_units="waybar.service hyprpaper.service hypridle.service hyprpolkitagent.service"
+_user_units="waybar.service hyprpaper.service hypridle.service hyprpolkitagent.service yui-shell.service"
 
 post_install() {
     systemctl --global enable $_user_units >/dev/null 2>&1

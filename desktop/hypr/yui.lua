@@ -365,3 +365,4 @@ hl.window_rule({
 -- Window management improvements
 require("yui_windows")
 require("yui_decorations")
+require("yui_shell")
