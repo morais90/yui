@@ -15,10 +15,12 @@ GridLayout {
     columnSpacing: Tokens.spacing.medium
 
     Rect {
-        Layout.column: 2
-        Layout.columnSpan: 3
-        Layout.preferredWidth: Tokens.sizes.dashboard.userWidth
-        Layout.fillHeight: true
+        Layout.row: 0
+        Layout.column: 0
+        Layout.columnSpan: 5
+        // Takes the row the weather card used to share with it
+        Layout.preferredWidth: Tokens.sizes.dashboard.weatherWidth + Tokens.sizes.dashboard.userWidth + root.columnSpacing
+        Layout.preferredHeight: 120 // the user card fills its row; the weather card used to set this height
 
         radius: Tokens.rounding.extraLarge
 
@@ -27,19 +29,6 @@ GridLayout {
 
             screenState: root.screenState
             facePicker: root.facePicker
-        }
-    }
-
-    Rect {
-        Layout.row: 0
-        Layout.columnSpan: 2
-        Layout.preferredWidth: Tokens.sizes.dashboard.weatherWidth
-        Layout.preferredHeight: weather.implicitHeight
-
-        radius: Tokens.rounding.extraLarge * 1.5
-
-        SmallWeather {
-            id: weather
         }
     }
 
