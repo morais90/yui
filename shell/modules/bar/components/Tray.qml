@@ -14,6 +14,9 @@ StyledRect {
     readonly property alias items: items
     readonly property alias expandIcon: expandIcon
 
+    // Applets whose job the status icons already do (network, Bluetooth).
+    // They keep running for their password and pairing prompts.
+    readonly property list<string> systemIcons: ["nm-applet", "blueman"]
     readonly property int padding: Config.bar.tray.background ? Tokens.padding.medium : Tokens.padding.extraSmall
     readonly property int spacing: Config.bar.tray.background ? Tokens.spacing.medium : Tokens.spacing.extraSmall
 
@@ -71,7 +74,7 @@ StyledRect {
             id: items
 
             model: ScriptModel {
-                values: SystemTray.items.values.filter(i => i.status !== Status.Passive && !GlobalConfig.bar.tray.hiddenIcons.includes(i.id))
+                values: SystemTray.items.values.filter(i => i.status !== Status.Passive && !root.systemIcons.includes(i.id) && !GlobalConfig.bar.tray.hiddenIcons.includes(i.id))
             }
 
             TrayItem {}
