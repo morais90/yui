@@ -15,6 +15,16 @@ hl.monitor({
     scale    = "auto",
 })
 
+-- Displays arranged in Yui Settings > Displays (written by the shell)
+do
+    local displays = os.getenv("HOME") .. "/.config/hypr/monitors.lua"
+    local f = io.open(displays, "r")
+    if f then
+        f:close()
+        dofile(displays)
+    end
+end
+
 
 ---------------------
 ---- MY PROGRAMS ----

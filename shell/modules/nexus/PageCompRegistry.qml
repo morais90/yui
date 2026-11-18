@@ -42,6 +42,10 @@ QtObject {
 
         // Connectivity
         Component {
+            // Displays (Yui)
+            DisplayPage {}
+        },
+        Component {
             // Network
             StackPage {
                 Component {

@@ -91,6 +91,10 @@ Yui adds:
 - **Spotlight** (`shell/modules/spotlight`): click the Yui logo on the bar, tap `Super` or press
   `Super+Space`. One box for apps, calculations (qalc), settings pages, files in your home folder
   and a web search. `Super+R` keeps the Caelestia launcher (wallpapers, schemes, commands).
+- **Displays** (Settings > Displays, `shell/modules/nexus/pages/DisplayPage.qml`): drag the screens to
+  arrange them, pick resolution, refresh rate, scale and rotation. Changes apply live and revert
+  after 15 s unless you click Keep (like macOS); kept settings go to `~/.config/hypr/monitors.lua`,
+  which `yui.lua` loads.
 - **IPC**: `qs -c caelestia ipc call switcher next|prev|commit|cancel`, `... overview toggle`, `... spotlight search <text>`, the entry
   point for scripts and the future AI layer.
 
@@ -143,6 +147,7 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] macOS-style windows: traffic lights, click to focus, zoom, minimize into the dock, dock auto-hide
 - [x] Snap windows by dragging them to screen edges and corners (yui-snap plugin)
 - [x] Spotlight-style search (apps, calculator, settings, files, web)
+- [x] Display settings: arrangement, resolution, scale, rotation
 - [x] Yui logo in the bar, dashboard, lock screen and About page
 - [ ] Rebrand the remaining identifiers (`caelestia` command, config paths) and os-release
 - [ ] Yui pacman repository (GitHub Releases + Actions), including hyprbars from AUR
