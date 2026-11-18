@@ -3,10 +3,10 @@
 # against the exact Hyprland version that runs them: rebuild on every
 # Hyprland update (pkgrel bump).
 pkgname=yui-hyprland-plugins
-pkgver=0.2.0
-pkgrel=2
+pkgver=0.3.0
+pkgrel=1
 _hyprver=0.57.2
-pkgdesc="Yui Hyprland plugins: yui-snap (macOS-style window snapping and stacking)"
+pkgdesc="Yui Hyprland plugins: yui-snap (macOS-style window snapping, stacking and window buttons)"
 arch=('x86_64')
 url="https://github.com/morais90/yui"
 license=('MIT')

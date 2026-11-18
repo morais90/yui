@@ -14,16 +14,31 @@
 // floating windows opened over a maximized one above it even when the
 // maximized window is clicked. Focusing the maximized window now sends the
 // others behind it; focusing one of them brings it back in front.
+//
+// And it completes apps' own window buttons (Chrome, GTK apps):
+//   - minimize requests, which Hyprland ignores, run `yui-minimize`;
+//   - Hyprland tells every app it is maximized (so GTK drops its shadows) and
+//     treats any maximize request as a toggle. Apps with their own maximize
+//     button then lose track after the first click and the button goes dead.
+//     Apps that draw their own title bar (no Hyprbar), and any app that asks
+//     to (un)maximize, are told their real state and get what they asked for.
 
 #include <format>
+#include <spawn.h>
+#include <unordered_map>
 #include <string>
 
 #include <hyprland/src/Compositor.hpp>
 #include <hyprland/src/desktop/state/WindowState.hpp>
 #include <hyprland/src/desktop/view/window/Window.hpp>
+#include <hyprland/src/desktop/view/window/WindowBackend.hpp>
 #include <hyprland/src/desktop/view/window/WindowFullscreenPolicy.hpp>
 #include <hyprland/src/desktop/view/window/WindowPresentation.hpp>
+#include <hyprland/src/protocols/XDGShell.hpp>
+#include <hyprland/src/render/decorations/IHyprWindowDecoration.hpp>
+#include <hyprland/src/protocols/core/Compositor.hpp>
 #include <hyprland/src/event/EventBus.hpp>
+#include <hyprland/src/managers/eventLoop/EventLoopManager.hpp>
 #include <hyprland/src/managers/fullscreen/FullscreenController.hpp>
 #include <hyprland/src/render/Renderer.hpp>
 #include <hyprland/src/ipc/s2/S2.hpp>
@@ -148,6 +163,99 @@ static void onActive(PHLWINDOW focused) {
         setOverFullscreen(focused, true);
 }
 
+extern char** environ;
+
+static void spawn(const std::vector<std::string>& args) {
+    std::vector<char*> argv;
+    for (const auto& a : args)
+        argv.push_back(const_cast<char*>(a.c_str()));
+    argv.push_back(nullptr);
+    pid_t pid;
+    posix_spawnp(&pid, argv[0], nullptr, nullptr, argv.data(), environ);
+}
+
+static std::string addressOf(PHLWINDOW w) {
+    return std::format("0x{:x}", reinterpret_cast<uintptr_t>(w.get()));
+}
+
+// Per-window listeners on the app's state requests
+struct STracked {
+    PHLWINDOWREF        window;
+    CHyprSignalListener listener;
+};
+static std::unordered_map<Desktop::View::CWindow*, STracked> g_requests;
+
+// Windows told their real maximized state
+static std::unordered_map<Desktop::View::CWindow*, bool> g_truthful;
+
+static SP<CXDGToplevelResource> toplevelOf(PHLWINDOW w) {
+    const auto surface = w->resource();
+    if (!surface || !surface->m_role || surface->m_role->role() != SURFACE_ROLE_XDG_SHELL)
+        return nullptr;
+    const auto xdg = static_cast<CXDGSurfaceRole*>(surface->m_role.get())->m_xdgSurface.lock();
+    return xdg ? xdg->m_toplevel.lock() : nullptr;
+}
+
+static void syncMaximized(PHLWINDOW w) {
+    if (const auto toplevel = toplevelOf(w))
+        toplevel->setMaximized(Fullscreen::controller()->isFullscreen(w, Fullscreen::FSMODE_MAXIMIZED));
+}
+
+static void onStateRequest(PHLWINDOWREF ref, const Desktop::View::SBackendStateRequest& req) {
+    const auto w = ref.lock();
+    if (!w)
+        return;
+
+    if (req.minimized.value_or(false))
+        spawn({"yui-minimize", addressOf(w)});
+
+    // Hyprland turns any maximize request into a toggle; honour the app's
+    // actual request instead (still readable while the signal is emitted)
+    const auto toplevel = toplevelOf(w);
+    if (req.maximized.has_value() && toplevel && toplevel->m_state.requestsMaximize.has_value()) {
+        const bool wanted = toplevel->m_state.requestsMaximize.value();
+        g_truthful[w.get()] = true;
+        if (Fullscreen::controller()->isFullscreen(w, Fullscreen::FSMODE_MAXIMIZED) != wanted)
+            Fullscreen::controller()->setFullscreenMode(w, std::nullopt, wanted ? Fullscreen::FSMODE_MAXIMIZED : Fullscreen::FSMODE_NONE);
+        syncMaximized(w);
+    }
+}
+
+static void track(PHLWINDOW w) {
+    if (!w)
+        return;
+    // A new window may reuse a destroyed one's address
+    if (const auto it = g_requests.find(w.get()); it != g_requests.end() && it->second.window.lock() == w)
+        return;
+    PHLWINDOWREF ref       = w;
+    g_requests[w.get()]    = {ref, w->backend().m_events.stateRequest.listen([ref](const Desktop::View::SBackendStateRequest& req) { onStateRequest(ref, req); })};
+    g_truthful.erase(w.get());
+}
+
+// Apps drawing their own title bar get the truth from the start
+static void checkOwnTitleBar(PHLWINDOW w) {
+    if (!w)
+        return;
+    for (const auto& d : w->presentation().decorations()) {
+        // A hidden bar (hyprbars:no_bar) stays attached but reserves no space
+        if (d && d->getDisplayName() == "Hyprbar" && d->getPositioningInfo().desiredExtents.topLeft.y > 0)
+            return;
+    }
+    g_truthful[w.get()] = true;
+    syncMaximized(w);
+}
+
+static void onOpenLate(PHLWINDOW w) {
+    // hyprbars drops its bar (no_bar rule) after the window opened
+    PHLWINDOWREF ref = w;
+    g_pEventLoopManager->doLater([ref] { checkOwnTitleBar(ref.lock()); });
+}
+
+static void untrack(Desktop::View::CWindow* w) {
+    g_requests.erase(w);
+    g_truthful.erase(w);
+}
+
 APICALL EXPORT std::string PLUGIN_API_VERSION() {
     return HYPRLAND_API_VERSION;
 }
@@ -164,8 +272,20 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
     static auto motion = g_layoutManager->dragController()->m_events.motion.listen([] { onMotion(); });
     static auto ended  = g_layoutManager->dragController()->m_events.ended.listen([] { onEnded(); });
     static auto active = Event::bus()->m_events.window.active.listen([](PHLWINDOW w, Desktop::eFocusReason) { onActive(w); });
+    static auto open   = Event::bus()->m_events.window.open.listen([](PHLWINDOW w) { track(w); });
+    static auto fsEv   = Event::bus()->m_events.window.fullscreen.listen([](PHLWINDOW w) {
+        if (w && g_truthful[w.get()])
+            syncMaximized(w);
+    });
+    static auto openLate = Event::bus()->m_events.window.openLate.listen([](PHLWINDOW w) { onOpenLate(w); });
+    static auto destroy = Event::bus()->m_events.window.destroy.listen([](PHLWINDOWREF w) { untrack(w.get()); });
+    for (const auto& w : Desktop::windowState()->windows()) {
+        track(w);
+        if (w->mapped())
+            checkOwnTitleBar(w);
+    }
 
-    return {"yui-snap", "macOS-style window snapping and stacking for Yui", "Yui", "0.2"};
+    return {"yui-snap", "macOS-style window snapping, stacking and buttons for Yui", "Yui", "0.3"};
 }
 
 APICALL EXPORT void PLUGIN_EXIT() {
