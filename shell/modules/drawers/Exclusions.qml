@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell
 import Caelestia.Config
 import qs.components.containers
+import qs.services
 import qs.modules.bar as Bar
 
 Scope {
@@ -29,7 +30,7 @@ Scope {
     // Reserve room for the Yui dock so windows don't go under it
     ExclusionZone {
         anchors.bottom: true
-        exclusiveZone: contentItem.Config.border.thickness + root.dock.implicitHeight
+        exclusiveZone: contentItem.Config.border.thickness + (YuiWindows.dockAutoHide ? 0 : root.dock.implicitHeight)
     }
 
     component ExclusionZone: StyledWindow {

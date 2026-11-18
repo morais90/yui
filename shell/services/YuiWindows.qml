@@ -15,6 +15,7 @@ Singleton {
 
     readonly property string minimizedWorkspace: "special:minimized"
     readonly property list<string> pinned: dockState.pinned
+    readonly property bool dockAutoHide: dockState.autoHide
 
     // Most recently used window addresses (front = last focused)
     property list<string> mru: []
@@ -46,6 +47,7 @@ Singleton {
             id: dockState
 
             property list<string> pinned: ["org.kde.dolphin", "google-chrome", "com.mitchellh.ghostty"]
+            property bool autoHide: false
         }
     }
 
@@ -60,6 +62,10 @@ Singleton {
 
     function unpin(appId: string): void {
         dockState.pinned = dockState.pinned.filter(id => id !== appId);
+    }
+
+    function setDockAutoHide(on: bool): void {
+        dockState.autoHide = on;
     }
 
     function address(t: HyprlandToplevel): string {

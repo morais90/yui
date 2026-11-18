@@ -67,6 +67,8 @@ CustomMouseArea {
     onPressed: event => dragStart = Qt.point(event.x, event.y)
     onContainsMouseChanged: {
         if (!containsMouse) {
+            root.panels.dock.edgeHovered = false;
+
             // Only hide if not activated by shortcut
             if (!osdShortcutActive) {
                 screenState.osd = false;
@@ -105,6 +107,9 @@ CustomMouseArea {
             root.panels.osd.hovered = inRightPanel(panels.osdWrapper, x, y);
             return;
         }
+
+        // Yui dock auto-hide: reveal when the pointer touches the bottom edge below it
+        root.panels.dock.edgeHovered = inBottomPanel(panels.dock, x, y);
 
         // Show bar in non-exclusive mode on hover
         if (!screenState.bar && Config.bar.showOnHover && x < bar.clampedWidth)

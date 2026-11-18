@@ -26,6 +26,7 @@ Item {
             { icon: "open_in_new", text: running ? qsTr("New window") : qsTr("Open"), run: () => YuiWindows.launch(app.appId) },
             { icon: pinned ? "keep_off" : "keep", text: pinned ? qsTr("Remove from Dock") : qsTr("Keep in Dock"), run: () => pinned ? YuiWindows.unpin(app.appId) : YuiWindows.pin(app.appId) }
         ];
+        list.push({ icon: YuiWindows.dockAutoHide ? "visibility" : "visibility_off", text: YuiWindows.dockAutoHide ? qsTr("Turn Hiding Off") : qsTr("Turn Hiding On"), run: () => YuiWindows.setDockAutoHide(!YuiWindows.dockAutoHide) });
         if (running)
             list.push({ icon: "close", text: app.windows.length > 1 ? qsTr("Close all windows") : qsTr("Close window"), run: () => app.windows.forEach(w => YuiWindows.close(w)) });
         return list;

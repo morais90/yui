@@ -10,6 +10,7 @@ Item {
 
     readonly property list<string> pinned: YuiWindows.pinned
     readonly property bool menuOpen: menu.expanded
+    readonly property bool hovered: hover.containsMouse
     readonly property alias menu: menu
 
     function openMenu(item: Item): void {
