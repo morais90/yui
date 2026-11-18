@@ -75,3 +75,12 @@ hl.on("window.fullscreen", function(w)
         hl.exec_cmd("yui-maximize " .. w.address)
     end
 end)
+
+-- Never move the pointer on its own (macOS): focusing a window from the
+-- dock, Alt+Tab, Mission Control or a keybind leaves the cursor where it is
+hl.config({
+    cursor = {
+        no_warps = true,
+        warp_on_change_workspace = 0,
+    },
+})
