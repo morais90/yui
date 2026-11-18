@@ -72,8 +72,7 @@ StyledWindow {
     WlrLayershell.layer: (fsTransitionProg > 0 && contentItem.Config.general.showOverFullscreen) || (hasSpecialWorkspace && hasFullscreenOnNormalWs) ? WlrLayer.Overlay : WlrLayer.Top
     WlrLayershell.keyboardFocus: screenState.launcher || screenState.session ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
-    // Full input while the dock menu is open, so clicking anywhere closes it
-    mask: hasFullscreen ? emptyRegion : panels.dock.menuOpen ? null : regions
+    mask: hasFullscreen ? emptyRegion : regions
 
     anchors.top: true
     anchors.bottom: true

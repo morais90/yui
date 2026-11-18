@@ -3,7 +3,6 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Caelestia.Config
 import qs.components
-import qs.components.controls
 import qs.services
 
 Item {
@@ -11,14 +10,10 @@ Item {
 
     readonly property list<string> pinned: YuiWindows.pinned
     readonly property bool menuOpen: menu.expanded
-
-    // App whose context menu is open: { appId, windows }
-    property var menuApp: ({ appId: "", windows: [] })
+    readonly property alias menu: menu
 
     function openMenu(item: Item): void {
-        menuApp = item.app;
-        menu.attachTo = item;
-        menu.expanded = true;
+        menu.open(item);
     }
 
     readonly property int iconSize: 46
@@ -63,42 +58,8 @@ Item {
     }
 
     // Right-click menu for an app
-    Menu {
+    DockMenu {
         id: menu
-
-        readonly property bool running: root.menuApp.windows.length > 0
-        readonly property bool pinned: root.pinned.includes(root.menuApp.appId)
-
-        attachTo: row
-        attachSideX: Menu.Left
-        thisSideX: Menu.Left
-        attachSideY: Menu.Top
-        thisSideY: Menu.Bottom
-        marginY: -Tokens.spacing.large
-        active: null
-        items: running ? [newWindow, pinToggle, closeAll] : [newWindow, pinToggle]
-
-        MenuItem {
-            id: newWindow
-
-            icon: "open_in_new"
-            text: menu.running ? qsTr("New window") : qsTr("Open")
-            onClicked: YuiWindows.launch(root.menuApp.appId)
-        }
-        MenuItem {
-            id: pinToggle
-
-            icon: menu.pinned ? "keep_off" : "keep"
-            text: menu.pinned ? qsTr("Remove from Dock") : qsTr("Keep in Dock")
-            onClicked: menu.pinned ? YuiWindows.unpin(root.menuApp.appId) : YuiWindows.pin(root.menuApp.appId)
-        }
-        MenuItem {
-            id: closeAll
-
-            icon: "close"
-            text: root.menuApp.windows.length > 1 ? qsTr("Close all windows") : qsTr("Close window")
-            onClicked: root.menuApp.windows.forEach(w => YuiWindows.close(w))
-        }
     }
 
     Row {

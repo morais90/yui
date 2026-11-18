@@ -16,6 +16,7 @@ Item {
     property real offsetScale: shouldBeActive ? 0 : 1
 
     readonly property bool menuOpen: content.menuOpen
+    readonly property Item menu: content.menu
 
     visible: offsetScale < 1
     anchors.bottomMargin: (-implicitHeight - 5) * offsetScale
