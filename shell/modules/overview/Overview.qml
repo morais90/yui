@@ -33,7 +33,7 @@ Scope {
         chosen = t;
         open = false;
         if (t)
-            YuiWindows.activate(t);
+            YuiWindows.activateAfterOverlay(t);
     }
 
     Variants {

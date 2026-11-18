@@ -145,6 +145,28 @@ Singleton {
         Hypr.dispatch(`hl.dsp.window.alter_zorder({ window = "address:${a}", mode = "top" })`);
     }
 
+    // Activate once an overlay that held the keyboard (switcher, Mission
+    // Control) has closed: focusing while it is still mapped is undone when
+    // Hyprland hands the focus back to the previous window
+    property var pendingActivate: null
+
+    function activateAfterOverlay(t: HyprlandToplevel): void {
+        pendingActivate = t;
+        activateTimer.restart();
+    }
+
+    Timer {
+        id: activateTimer
+
+        interval: 120
+        onTriggered: {
+            const t = root.pendingActivate;
+            root.pendingActivate = null;
+            if (t)
+                root.activate(t);
+        }
+    }
+
     // Hyprland ignores close requests for windows on hidden special workspaces
     function close(t: HyprlandToplevel): void {
         if (isMinimized(t))

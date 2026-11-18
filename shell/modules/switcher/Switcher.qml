@@ -41,7 +41,7 @@ Scope {
         const t = windows[index];
         open = false;
         if (t)
-            YuiWindows.activate(t);
+            YuiWindows.activateAfterOverlay(t);
     }
 
     function cancel(): void {
