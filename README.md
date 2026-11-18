@@ -15,7 +15,7 @@ Yui is distributed as **Arch packages** (`yui-*`). A machine running Yui does no
 | Package | Contents |
 |---|---|
 | `yui-base` | Network, audio, Bluetooth and base tools |
-| `yui-shell` | The Yui Shell: bar, Spotlight, dashboard, notifications, OSD, lock screen, wallpaper and dynamic colors (fork of Caelestia) |
+| `yui-shell` | The Yui Shell: bar, Spotlight, notifications, OSD, lock screen, wallpaper and dynamic colors (fork of Caelestia) |
 | `yui-cli` | Shell control, color schemes, wallpapers, screenshots (fork of the Caelestia CLI) |
 | `yui-desktop` | Hyprland plus Yui's defaults in `/usr/share/yui`, the Yui dock and window switcher, idle, `yui-*` scripts |
 | `yui-nvidia` | NVIDIA GPU support |
@@ -74,7 +74,7 @@ git subtree pull --prefix=shell caelestia-shell main --squash
 git subtree pull --prefix=cli caelestia-cli main --squash
 ```
 
-It provides the bar, Spotlight (click the Y), dashboard, notifications sidebar, on-screen
+It provides the bar, Spotlight (click the Y), notifications sidebar, on-screen
 displays, session menu, lock screen and wallpaper-based colors. It runs as the `yui-shell`
 user service (`qs -c caelestia`).
 
@@ -140,7 +140,7 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] Automatic brightness device detection (no per-machine config)
 - [x] Floating windows with title bars (minimize, maximize, close)
 - [x] Yui Shell phase 1: dock and window switcher (Quickshell)
-- [x] Yui Shell based on Caelestia (bar, dashboard, notifications, lock)
+- [x] Yui Shell based on Caelestia (bar, notifications, lock)
 - [x] Dock as a native Yui Shell drawer
 - [x] Window switcher in the Yui Shell's visual language
 - [x] Mission Control (Super+Up or three-finger swipe up)
@@ -148,7 +148,7 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] Snap windows by dragging them to screen edges and corners (yui-snap plugin)
 - [x] Spotlight-style search (apps, calculator, settings, files, web)
 - [x] Display settings: arrangement, resolution, scale, rotation
-- [x] Yui logo in the bar, dashboard, lock screen and About page
+- [x] Yui logo in the bar, lock screen and About page
 - [ ] Rebrand the remaining identifiers (`caelestia` command, config paths) and os-release
 - [ ] Yui pacman repository (GitHub Releases + Actions), including hyprbars from AUR
 - [ ] btrfs snapshots (snapper, snap-pac, grub-btrfs)
