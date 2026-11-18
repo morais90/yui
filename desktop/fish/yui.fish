@@ -1,6 +1,10 @@
 # Yui defaults for fish, loaded from vendor_conf.d before the user's
 # ~/.config/fish/config.fish (which can override anything here).
 
+# User programs (pip --user, installers like Claude Code's): ~/.local/bin,
+# like Arch's bash setup. Added only if it exists; also for scripts.
+fish_add_path --global --path ~/.local/bin
+
 status is-interactive; or exit
 
 # No greeting banner
