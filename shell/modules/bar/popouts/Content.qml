@@ -7,11 +7,13 @@ import Caelestia.Config
 import qs.components
 import qs.services
 import qs.modules.bar.popouts.kblayout
+import qs.modules.dashboard.dash as Dash
 
 Item {
     id: root
 
     required property PopoutState popouts
+    required property ShellScreen screen
     readonly property Popout currentPopout: content.children.find(c => c.shouldBeActive) ?? null
     readonly property Item current: currentPopout?.item ?? null
 
@@ -28,6 +30,20 @@ Item {
 
         anchors.fill: parent
         anchors.margins: Tokens.padding.large
+
+        Popout {
+            name: "calendar"
+            sourceComponent: Item {
+                implicitWidth: 340
+                implicitHeight: calendar.implicitHeight
+
+                Dash.Calendar {
+                    id: calendar
+
+                    screenState: ShellState.forScreen(root.screen)
+                }
+            }
+        }
 
         Popout {
             id: networkPopout

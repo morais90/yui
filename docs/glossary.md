@@ -9,7 +9,7 @@ The names we use for each part of the screen, so we always mean the same thing.
   - **Workspace dots**: one dot per workspace (virtual desktop); the highlighted one is where
     you are.
   - **Tray**: icons of apps running in the background (Discord, Steam...).
-  - **Clock**.
+  - **Clock**: hovering it opens the **calendar** popout.
   - **Status icons**: network, Bluetooth, battery, keyboard layout and similar. Hovering one
     opens its **popout**.
   - **Power button**: opens the session menu.
@@ -20,9 +20,9 @@ The names we use for each part of the screen, so we always mean the same thing.
 
 ## Things that appear when needed
 
-- **Popout**: a small card that grows out of the bar next to the item it belongs to (network,
-  Bluetooth, sound, battery, tray menus).
-- **Dashboard**: the panel that drops from the top edge, with tabs for the clock and calendar,
+- **Popout**: a small card that grows out of the bar next to the item it belongs to (calendar,
+  network, Bluetooth, sound, battery, tray menus).
+- **Dashboard**: the panel that drops from the top edge, with tabs for an overview,
   media and performance.
 - **Sidebar**: the panel on the right edge with notifications (`Super+N`).
 - **Utilities**: the small panel in the bottom-right corner (quick toggles, recording).

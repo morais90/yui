@@ -52,6 +52,10 @@ ColumnLayout {
                 popouts.currentCenter = Qt.binding(() => icon.mapToItem(root, 0, icon.implicitHeight / 2).y);
                 popouts.hasCurrent = true;
             }
+        } else if (id === "clock") {
+            popouts.currentName = "calendar";
+            popouts.currentCenter = Qt.binding(() => ch.mapToItem(root, 0, ch.implicitHeight / 2).y);
+            popouts.hasCurrent = true;
         } else if (id === "tray" && Config.bar.popouts.tray) {
             const tray = ch.item as Tray;
             if (!Config.bar.tray.compact || (tray.expanded && !tray.expandIcon.contains(mapToItem(tray.expandIcon, tray.implicitWidth / 2, y)))) {

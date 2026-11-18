@@ -17,10 +17,10 @@ GridLayout {
     Rect {
         Layout.row: 0
         Layout.column: 0
-        Layout.columnSpan: 5
-        // Takes the row the weather card used to share with it
-        Layout.preferredWidth: Tokens.sizes.dashboard.weatherWidth + Tokens.sizes.dashboard.userWidth + root.columnSpacing
-        Layout.preferredHeight: 120 // the user card fills its row; the weather card used to set this height
+        Layout.columnSpan: 2
+        Layout.fillWidth: true
+        Layout.preferredWidth: Tokens.sizes.dashboard.userWidth
+        Layout.preferredHeight: 120 // the user card fills its row; nothing else sets its height
 
         radius: Tokens.rounding.extraLarge
 
@@ -35,7 +35,7 @@ GridLayout {
     Rect {
         Layout.row: 1
         Layout.preferredWidth: dateTime.implicitWidth
-        Layout.fillHeight: true
+        Layout.preferredHeight: 260 // sets the row height; the cards in it fill it
 
         radius: Tokens.rounding.large
 
@@ -47,22 +47,7 @@ GridLayout {
     Rect {
         Layout.row: 1
         Layout.column: 1
-        Layout.columnSpan: 3
         Layout.fillWidth: true
-        Layout.preferredHeight: calendar.implicitHeight
-
-        radius: Tokens.rounding.extraLarge
-
-        Calendar {
-            id: calendar
-
-            screenState: root.screenState
-        }
-    }
-
-    Rect {
-        Layout.row: 1
-        Layout.column: 4
         Layout.preferredWidth: resources.implicitWidth
         Layout.fillHeight: true
 
@@ -70,12 +55,14 @@ GridLayout {
 
         Resources {
             id: resources
+
+            anchors.horizontalCenter: parent.horizontalCenter
         }
     }
 
     Rect {
         Layout.row: 0
-        Layout.column: 5
+        Layout.column: 2
         Layout.rowSpan: 2
         Layout.preferredWidth: media.implicitWidth
         Layout.fillHeight: true
