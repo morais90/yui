@@ -43,6 +43,13 @@ else
         | .reserved as [$l, $t, $r, $b]
         | "\(.x + $l + $gl) \(.y + $t + $gt) \($mw - $l - $r - $gl - $gr) \($mh - $t - $b - $gt - $gb)"' <<<"$mon")
 
+    # The hyprbars title bar sits above the window's own geometry: keep it on screen
+    if hyprctl decorations "$win" 2>/dev/null | grep -q '^Hyprbar'; then
+        bar=$(hyprctl getoption plugin:hyprbars:bar_height -j | jq -r '.int // 0')
+        y=$((y + bar))
+        h=$((h - bar))
+    fi
+
     if [[ $(jq -r .floating <<<"$client") != true ]]; then
         dispatch "hl.dsp.window.float({ window = \"$win\", action = \"enable\" })"
     fi
