@@ -18,6 +18,19 @@ hl.window_rule({
     size  = { 1100, 700 },
 })
 
+------------------ SNAPPING (yui-snap plugin) ------------------
+-- Drag a window to a screen edge or corner to snap it to a half or a quarter
+-- (top edge fills the screen). The plugin reports the drag; the Yui Shell
+-- shows the preview and runs yui-snap. See plugins/yui-snap.
+local YUI_SNAP = "/usr/lib/libyui-snap.so"
+do
+    local f = io.open(YUI_SNAP, "r")
+    if f then
+        f:close()
+        hl.plugin.load(YUI_SNAP)
+    end
+end
+
 ------------------ TITLE BARS (hyprbars) ------------------
 local HYPRBARS = "/usr/lib/libhyprbars.so"
 

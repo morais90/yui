@@ -1,0 +1,23 @@
+# Maintainer: Willian Morais
+# Yui's Hyprland plugins, built from plugins/. Hyprland plugins must be built
+# against the exact Hyprland version that runs them: rebuild on every
+# Hyprland update (pkgrel bump).
+pkgname=yui-hyprland-plugins
+pkgver=0.1.0
+pkgrel=1
+_hyprver=0.57.2
+pkgdesc="Yui Hyprland plugins: yui-snap (macOS-style window snapping)"
+arch=('x86_64')
+url="https://github.com/morais90/yui"
+license=('MIT')
+depends=("hyprland=$_hyprver")
+makedepends=(pkgconf)
+
+build() {
+    make -C "$startdir/../../plugins/yui-snap" clean all
+}
+
+package() {
+    install -Dm755 "$startdir/../../plugins/yui-snap/yui-snap.so" "$pkgdir/usr/lib/libyui-snap.so"
+    make -C "$startdir/../../plugins/yui-snap" clean
+}

@@ -29,6 +29,7 @@ Defaults live in `/usr/share/yui`. User configs in `~/.config` always take prece
 | `shell/` | Yui Shell, imported from [Caelestia shell](https://github.com/caelestia-dots/shell) (GPL-3.0) |
 | `cli/` | Yui CLI, imported from [Caelestia CLI](https://github.com/caelestia-dots/cli) (GPL-3.0) |
 | `desktop/` | Files installed by `yui-desktop` (configs, scripts, service drop-ins) |
+| `plugins/` | Yui's Hyprland plugins (C++), e.g. `yui-snap`; rebuilt for every Hyprland version |
 | `pkgs/` | One `PKGBUILD` per Yui package; `pkgs/third-party` holds reviewed recipes for dependencies outside the official repos |
 | `iso/` | (planned) archiso profile |
 | `docs/` | Documentation and design decisions |
@@ -48,6 +49,7 @@ yui-setup          # prepares the user's ~/.config (--reset restores Yui's defau
 | `yui-setup` | Creates the user's `hyprland.lua` pointing to Yui's defaults |
 | `yui-brightness` | Internal display brightness (picks the right device on hybrid laptops) |
 | `yui-lock` | Locks the screen (Yui Shell lock screen) |
+| `yui-snap` | Snaps a window to a half, quarter or the whole free area (`left`, `topright`, `top`...) |
 | `yui-maximize` | Zoom (macOS-style): fills the free area of the monitor, toggles back; used by the maximize button |
 | `yui-minimize` | Minimize / restore windows (Hyprland has no native minimize) |
 | `yui-config-run` | Chooses between the user's config and Yui's default |
@@ -128,7 +130,7 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] Window switcher in the Yui Shell's visual language
 - [x] Mission Control (Super+Up or three-finger swipe up)
 - [x] macOS-style windows: traffic lights, click to focus, zoom, minimize into the dock, dock auto-hide
-- [ ] Snap windows to screen halves by dragging them to the edges
+- [x] Snap windows by dragging them to screen edges and corners (yui-snap plugin)
 - [ ] Spotlight-style search
 - [x] Yui logo in the bar, dashboard, lock screen and About page
 - [ ] Rebrand the remaining identifiers (`caelestia` command, config paths) and os-release

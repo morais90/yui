@@ -1,0 +1,53 @@
+#!/bin/bash
+# Snaps a window to a part of the free area of its monitor (outside the bar,
+# dock and gaps), macOS Sequoia style. Called by the Yui Shell when the
+# yui-snap Hyprland plugin reports a window dropped on a screen edge.
+#
+#   yui-snap <zone> [address]
+#   zone: left | right | top (fill) | topleft | topright | bottomleft | bottomright
+set -euo pipefail
+
+zone="${1:?usage: yui-snap <zone> [address]}"
+if [[ -n "${2:-}" ]]; then
+    client=$(hyprctl clients -j | jq -c --arg a "$2" '.[] | select(.address == $a)')
+else
+    client=$(hyprctl activewindow -j)
+fi
+[[ -n "$client" && "$client" != "{}" ]] || exit 0
+addr=$(jq -r .address <<<"$client")
+win="address:$addr"
+dispatch() { hyprctl dispatch "$1" >/dev/null; }
+
+# A snapped window is no longer zoomed
+rm -f "${XDG_RUNTIME_DIR:-/tmp}/yui-maximize/$addr"
+
+mon=$(hyprctl monitors -j | jq -c --argjson id "$(jq .monitor <<<"$client")" '.[] | select(.id == $id)')
+read -r gt gr gb gl < <(hyprctl getoption general:gaps_out -j | jq -r '.css' | awk '{print $1, ($2==""?$1:$2), ($3==""?$1:$3), ($4==""?($2==""?$1:$2):$4)}')
+gap=$(hyprctl getoption general:gaps_in -j | jq -r '.css' | awk '{print $1 * 2}')
+read -r ax ay aw ah < <(jq -r --argjson gt "$gt" --argjson gr "$gr" --argjson gb "$gb" --argjson gl "$gl" '
+    (if (.transform % 2) == 1 then [.height, .width] else [.width, .height] end) as [$pw, $ph]
+    | ($pw / .scale | floor) as $mw | ($ph / .scale | floor) as $mh
+    | .reserved as [$l, $t, $r, $b]
+    | "\(.x + $l + $gl) \(.y + $t + $gt) \($mw - $l - $r - $gl - $gr) \($mh - $t - $b - $gt - $gb)"' <<<"$mon")
+
+hw=$(((aw - gap) / 2)); hh=$(((ah - gap) / 2))
+case "$zone" in
+    left)        x=$ax;               y=$ay;               w=$hw; h=$ah ;;
+    right)       x=$((ax + hw + gap)); y=$ay;               w=$hw; h=$ah ;;
+    top)         x=$ax;               y=$ay;               w=$aw; h=$ah ;;
+    topleft)     x=$ax;               y=$ay;               w=$hw; h=$hh ;;
+    topright)    x=$((ax + hw + gap)); y=$ay;               w=$hw; h=$hh ;;
+    bottomleft)  x=$ax;               y=$((ay + hh + gap)); w=$hw; h=$hh ;;
+    bottomright) x=$((ax + hw + gap)); y=$((ay + hh + gap)); w=$hw; h=$hh ;;
+    *) echo "unknown zone: $zone" >&2; exit 1 ;;
+esac
+
+# Keep the hyprbars title bar inside the tile
+if hyprctl decorations "$win" 2>/dev/null | grep -q '^Hyprbar'; then
+    bar=$(hyprctl getoption plugin:hyprbars:bar_height -j | jq -r '.int // 0')
+    y=$((y + bar)); h=$((h - bar))
+fi
+
+dispatch "hl.dsp.window.resize({ window = \"$win\", x = $w, y = $h })"
+dispatch "hl.dsp.window.move({ window = \"$win\", x = $x, y = $y })"
+dispatch "hl.dsp.focus({ window = \"$win\" })"

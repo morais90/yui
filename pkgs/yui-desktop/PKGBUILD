@@ -1,6 +1,6 @@
 # Maintainer: Willian Morais
 pkgname=yui-desktop
-pkgver=0.6.0
+pkgver=0.7.0
 pkgrel=1
 pkgdesc="Yui desktop: Hyprland defaults, idle, helper scripts"
 arch=('any')
@@ -11,7 +11,7 @@ depends=(
     hyprland uwsm sddm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
     hyprpolkitagent qt5-wayland qt6-wayland
     # shell: Yui Shell (Caelestia fork, includes the dock and switcher)
-    yui-shell quickshell-git hypridle wofi
+    yui-shell yui-hyprland-plugins quickshell-git hypridle wofi
     network-manager-applet blueman pavucontrol
     # tools used by keybinds and scripts
     ghostty xdg-terminal-exec dolphin grim slurp wl-clipboard cliphist brightnessctl playerctl

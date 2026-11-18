@@ -13,6 +13,7 @@ import qs.modules.background
 import qs.modules.drawers
 import qs.modules.lock
 import qs.modules.overview
+import qs.modules.snap
 import qs.modules.switcher
 import qs.daemons
 
@@ -48,6 +49,7 @@ ShellRoot {
     AreaPicker {}
     Switcher {}
     Overview {}
+    Snap {}
     Lock {
         id: lock
     }
