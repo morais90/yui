@@ -15,6 +15,7 @@ This folder describes **what Yui is like to use**, not how it is built. The tech
 ## Contents
 
 - [Principles](principles.md): what every part of Yui must be.
+- [Glossary](glossary.md): the name of each part of the screen.
 - Experience, one page per part of the system:
   - [Windows](experience/windows.md): title bars, zoom, minimize, snapping.
   - [Dock](experience/dock.md): apps, hiding, the right-click menu.
