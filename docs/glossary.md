@@ -8,7 +8,6 @@ The names we use for each part of the screen, so we always mean the same thing.
   - **Y**: the Yui logo; click it to open Spotlight.
   - **Workspace dots**: one dot per workspace (virtual desktop); the highlighted one is where
     you are.
-  - **Window title**: the name of the active window, written vertically.
   - **Tray**: icons of apps running in the background (Discord, Steam...).
   - **Clock**.
   - **Status icons**: network, Bluetooth, battery, keyboard layout and similar. Hovering one

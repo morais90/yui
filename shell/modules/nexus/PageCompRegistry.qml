@@ -130,9 +130,6 @@ QtObject {
                     BarWorkspaces {}
                 }
                 Component {
-                    BarActiveWindow {}
-                }
-                Component {
                     BarTray {}
                 }
                 Component {

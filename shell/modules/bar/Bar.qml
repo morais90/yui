@@ -134,16 +134,6 @@ ColumnLayout {
                 }
             }
             DelegateChoice {
-                roleValue: "activeWindow"
-                delegate: EntryWrapper {
-                    ActiveWindow {
-                        objectName: "taskbarActiveWindow"
-                        bar: root
-                        monitor: Brightness.getMonitorForScreen(root.screen)
-                    }
-                }
-            }
-            DelegateChoice {
                 roleValue: "tray"
                 delegate: EntryWrapper {
                     Tray {
