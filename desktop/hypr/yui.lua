@@ -49,6 +49,12 @@ end)
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 
+-- Accents with dead keys (´ + e = é): with no input method running, GTK 4
+-- apps like Ghostty otherwise wait for one and drop the composition. GTK's
+-- built-in composer handles them. Also in environment.d for apps started by
+-- systemd (dock, Spotlight). Remove both if you install ibus or fcitx5.
+hl.env("GTK_IM_MODULE", "simple")
+
 
 -----------------------
 ----- PERMISSIONS -----
