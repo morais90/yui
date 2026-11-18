@@ -3,7 +3,7 @@
 pkgname=yui-shell
 _upstream_version=2.5.0
 _upstream_rev=e72df8e
-pkgver=2.5.0.r6
+pkgver=2.5.0.r7
 pkgrel=1
 pkgdesc="Yui Shell: bar, launcher, dashboard, notifications, lock (fork of Caelestia)"
 arch=('x86_64')

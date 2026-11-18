@@ -37,11 +37,6 @@ Region {
         item: root.panels.dock.menuOpen ? root.panels.dock.menu : null
         intersection: Intersection.Subtract
     }
-    R {
-        panel: root.panels.launcher
-        y: root.win.height - height
-        height: panel.height * (1 - root.panels.launcher.offsetScale) + root.borderThickness
-    }
 
     R {
         id: sessionRegion

@@ -2,14 +2,11 @@
 -- Most features are reachable with the mouse; these keys are shortcuts.
 
 -- Spotlight opens only from the Y on the bar (docs/principles.md, one way to
--- do each thing). Super+R keeps the Caelestia launcher until its parts move
--- into Spotlight and Settings (docs/experience/spotlight.md).
-hl.bind("SUPER + R", hl.dsp.global("caelestia:launcher"))
+-- do each thing).
 
 -- Panels
 hl.bind("CTRL + ALT + Delete", hl.dsp.global("caelestia:session"))     -- power / session menu
 hl.bind("SUPER + N",           hl.dsp.global("caelestia:sidebar"))     -- notifications sidebar
-hl.bind("SUPER + K",           hl.dsp.global("caelestia:showall"))     -- launcher + dashboard + OSD
 hl.bind("CTRL + ALT + C",      hl.dsp.global("caelestia:clearNotifs"), { locked = true })
 
 -- Alt+Tab / Alt+Shift+Tab: window switcher (shell/modules/switcher)

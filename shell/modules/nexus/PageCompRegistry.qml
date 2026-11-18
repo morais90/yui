@@ -119,9 +119,6 @@ QtObject {
                     TaskbarPanel {}
                 }
                 Component {
-                    LauncherPanel {}
-                }
-                Component {
                     SidebarPanel {}
                 }
                 Component {

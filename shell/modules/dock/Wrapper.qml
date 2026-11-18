@@ -6,7 +6,7 @@ import qs.components
 import qs.services
 
 // Yui dock drawer: grows out of the bottom border like the other panels.
-// Slides away while the launcher (same edge) is open and in fullscreen.
+// Slides away in fullscreen.
 // With auto-hide on (macOS "Automatically hide and show the Dock") it stays
 // hidden until the pointer touches the bottom edge below it.
 Item {
@@ -37,7 +37,7 @@ Item {
         onTriggered: root.revealed = false
     }
 
-    readonly property bool shouldBeActive: !fullscreen && !(screenState.launcher && Config.launcher.enabled) && (!autoHide || revealed)
+    readonly property bool shouldBeActive: !fullscreen && (!autoHide || revealed)
     property real offsetScale: shouldBeActive ? 0 : 1
 
     readonly property bool menuOpen: content.menuOpen

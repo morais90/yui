@@ -15,7 +15,7 @@ Yui is distributed as **Arch packages** (`yui-*`). A machine running Yui does no
 | Package | Contents |
 |---|---|
 | `yui-base` | Network, audio, Bluetooth and base tools |
-| `yui-shell` | The Yui Shell: bar, launcher, dashboard, notifications, OSD, lock screen, wallpaper and dynamic colors (fork of Caelestia) |
+| `yui-shell` | The Yui Shell: bar, Spotlight, dashboard, notifications, OSD, lock screen, wallpaper and dynamic colors (fork of Caelestia) |
 | `yui-cli` | Shell control, color schemes, wallpapers, screenshots (fork of the Caelestia CLI) |
 | `yui-desktop` | Hyprland plus Yui's defaults in `/usr/share/yui`, the Yui dock and window switcher, idle, `yui-*` scripts |
 | `yui-nvidia` | NVIDIA GPU support |
@@ -74,7 +74,7 @@ git subtree pull --prefix=shell caelestia-shell main --squash
 git subtree pull --prefix=cli caelestia-cli main --squash
 ```
 
-It provides the bar, launcher (tap `Super`), dashboard, notifications sidebar, on-screen
+It provides the bar, Spotlight (click the Y), dashboard, notifications sidebar, on-screen
 displays, session menu, lock screen and wallpaper-based colors. It runs as the `yui-shell`
 user service (`qs -c caelestia`).
 
@@ -84,15 +84,14 @@ Yui adds:
   other panels, with the same wallpaper-based colors. Pinned and running apps, magnification
   on hover, launch bounce, running/focused indicators. Minimized windows appear on the right
   with a thumbnail: left click restores, right click closes. Right click an app to keep it in
-  or remove it from the dock (saved in `~/.local/state/caelestia/dock.json`). It slides away while the
-  launcher is open and in fullscreen, and windows don't go under it.
+  or remove it from the dock (saved in `~/.local/state/caelestia/dock.json`). It slides away in fullscreen, and windows don't go under it.
 - **Window switcher** (`shell/modules/switcher`): `Alt+Tab` / `Alt+Shift+Tab` show live previews of every window, most
   recent first. Release `Alt` or click a preview to switch; `Esc` cancels.
 - **Mission Control** (`shell/modules/overview`): `Super+↑` or a three-finger swipe up shows
   every window of each screen side by side, zooming out from their real positions. Click a
   window to bring it to the front; `Esc` or click the background to go back.
 - **Spotlight** (`shell/modules/spotlight`): click the Y on the bar. One box for apps, calculations (qalc), settings pages, files in your home folder
-  and a web search. `Super+R` keeps the Caelestia launcher (wallpapers, schemes, commands).
+  and a web search.
 - **Displays** (Settings > Displays, `shell/modules/nexus/pages/DisplayPage.qml`): drag the screens to
   arrange them, pick resolution, refresh rate, scale and rotation. Changes apply live and revert
   after 15 s unless you click Keep (like macOS); kept settings go to `~/.config/hypr/monitors.lua`,
@@ -120,9 +119,8 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 
 | Keybind | Action |
 |---|---|
-| `Super` (tap) or `Super+R` | Launcher |
 | `Super+Q` / `Super+E` | Terminal / file manager |
-| `Super+N` / `Super+K` | Notifications sidebar / all panels |
+| `Super+N` | Notifications sidebar |
 | `Ctrl+Alt+Del` | Session menu (lock, log out, reboot, shut down) |
 | `Super+C` | Close window |
 | `Super+V` | Toggle floating / tiling for a window |
@@ -142,7 +140,7 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] Automatic brightness device detection (no per-machine config)
 - [x] Floating windows with title bars (minimize, maximize, close)
 - [x] Yui Shell phase 1: dock and window switcher (Quickshell)
-- [x] Yui Shell based on Caelestia (bar, launcher, dashboard, notifications, lock)
+- [x] Yui Shell based on Caelestia (bar, dashboard, notifications, lock)
 - [x] Dock as a native Yui Shell drawer
 - [x] Window switcher in the Yui Shell's visual language
 - [x] Mission Control (Super+Up or three-finger swipe up)

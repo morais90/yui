@@ -26,12 +26,13 @@ You type what you want instead of hunting through menus.
 - **Files are searched on demand** with `find`, limited in depth and skipping hidden and
   dependency folders: answers in milliseconds without an indexing service running in the
   background (principle 1).
+- **There is no other launcher.** Caelestia's launcher (`Super+R`, typed `>` commands for
+  wallpapers, colour schemes, power) was removed: everything it did is already in Spotlight,
+  Settings > Wallpaper & style, or the power button on the bar.
 - **Web search is always the last result**, so Enter on something unknown still does something
   useful.
 
 ## Open
 
-- The Caelestia launcher (`Super+R`: wallpapers, colour schemes, commands) overlaps with
-  Spotlight. Its useful parts should move into Spotlight or Settings, and the launcher go.
 - File results could open the containing folder as an alternative action, if that proves
   needed.
