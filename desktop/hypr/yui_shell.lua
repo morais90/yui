@@ -3,8 +3,11 @@
 
 local release = { release = true }
 
--- Launcher: tap Super alone (or Super+R)
-hl.bind("SUPER + SUPER_L", hl.dsp.global("caelestia:launcher"), release)
+-- Spotlight (shell/modules/spotlight): tap Super alone, Super+Space, or
+-- click the Yui logo on the bar. Super+R keeps the Caelestia launcher
+-- (wallpapers, colour schemes, commands).
+hl.bind("SUPER + SUPER_L", hl.dsp.global("caelestia:spotlight"), release)
+hl.bind("SUPER + space",   hl.dsp.global("caelestia:spotlight"))
 hl.bind("SUPER + R",       hl.dsp.global("caelestia:launcher"))
 
 -- Panels
@@ -31,4 +34,12 @@ hl.layer_rule({
     match = { namespace = "^caelestia-overview$" },
     blur  = true,
     ignore_alpha = 0.1,
+})
+
+-- Blur behind the Spotlight panel (the rest of its layer is transparent)
+hl.layer_rule({
+    name  = "yui-spotlight-blur",
+    match = { namespace = "^caelestia-spotlight$" },
+    blur  = true,
+    ignore_alpha = 0.5,
 })

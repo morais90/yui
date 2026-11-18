@@ -3,7 +3,7 @@
 pkgname=yui-shell
 _upstream_version=2.5.0
 _upstream_rev=e72df8e
-pkgver=2.5.0.r4
+pkgver=2.5.0.r5
 pkgrel=1
 pkgdesc="Yui Shell: bar, launcher, dashboard, notifications, lock (fork of Caelestia)"
 arch=('x86_64')
@@ -14,7 +14,7 @@ depends=(
     glibc gcc-libs ddcutil brightnessctl networkmanager lm_sensors aubio
     libpipewire libqalculate power-profiles-daemon
     ttf-material-symbols-variable ttf-cascadia-code-nerd
-    qt6-base qt6-declarative qt6-imageformats swappy fish bash
+    qt6-base qt6-declarative qt6-imageformats swappy fish bash xdg-utils
 )
 optdepends=('fprintd: fingerprint unlock for the lock screen')
 makedepends=(cmake ninja qt6-shadertools)

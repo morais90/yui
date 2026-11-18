@@ -14,6 +14,7 @@ import qs.modules.drawers
 import qs.modules.lock
 import qs.modules.overview
 import qs.modules.snap
+import qs.modules.spotlight
 import qs.modules.switcher
 import qs.daemons
 
@@ -50,6 +51,7 @@ ShellRoot {
     Switcher {}
     Overview {}
     Snap {}
+    Spotlight {}
     Lock {
         id: lock
     }

@@ -88,7 +88,10 @@ Yui adds:
 - **Mission Control** (`shell/modules/overview`): `Super+↑` or a three-finger swipe up shows
   every window of each screen side by side, zooming out from their real positions. Click a
   window to bring it to the front; `Esc` or click the background to go back.
-- **IPC**: `qs -c caelestia ipc call switcher next|prev|commit|cancel`, `... overview toggle`, the entry
+- **Spotlight** (`shell/modules/spotlight`): click the Yui logo on the bar, tap `Super` or press
+  `Super+Space`. One box for apps, calculations (qalc), settings pages, files in your home folder
+  and a web search. `Super+R` keeps the Caelestia launcher (wallpapers, schemes, commands).
+- **IPC**: `qs -c caelestia ipc call switcher next|prev|commit|cancel`, `... overview toggle`, `... spotlight search <text>`, the entry
   point for scripts and the future AI layer.
 
 ## Session startup
@@ -131,7 +134,7 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] Mission Control (Super+Up or three-finger swipe up)
 - [x] macOS-style windows: traffic lights, click to focus, zoom, minimize into the dock, dock auto-hide
 - [x] Snap windows by dragging them to screen edges and corners (yui-snap plugin)
-- [ ] Spotlight-style search
+- [x] Spotlight-style search (apps, calculator, settings, files, web)
 - [x] Yui logo in the bar, dashboard, lock screen and About page
 - [ ] Rebrand the remaining identifiers (`caelestia` command, config paths) and os-release
 - [ ] Yui pacman repository (GitHub Releases + Actions), including hyprbars from AUR

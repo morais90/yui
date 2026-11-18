@@ -25,6 +25,9 @@ Singleton {
         FloatingWindow {
             id: win
 
+            // Page to show first (Spotlight opens settings on a given page)
+            property int initialPage
+
             color: Colours.tPalette.m3surface
             surfaceFormat.opaque: false
 
@@ -51,6 +54,7 @@ Singleton {
                 nState.screen: win.screen
                 nState.isWindow: true
                 onClose: win.destroy()
+                Component.onCompleted: nState.currentPageIdx = win.initialPage
             }
 
             Behavior on color {

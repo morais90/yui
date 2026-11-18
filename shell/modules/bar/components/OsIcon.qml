@@ -1,4 +1,5 @@
 import QtQuick
+import Quickshell
 import Caelestia.Config
 import qs.components
 import qs.components.effects
@@ -14,10 +15,8 @@ Item {
     MouseArea {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
-        onClicked: {
-            const screenState = ShellState.forActive();
-            screenState.launcher = !screenState.launcher;
-        }
+        // Yui logo: opens Spotlight (like the macOS menu bar search)
+        onClicked: Quickshell.execDetached(["qs", "-c", "caelestia", "ipc", "call", "spotlight", "toggle"])
     }
 
     Loader {
