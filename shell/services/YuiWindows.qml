@@ -113,11 +113,13 @@ Singleton {
         return [...list].sort((a, b) => rank(a) - rank(b));
     }
 
-    // Restore if minimized, then focus and raise
+    // Focus and raise; minimized windows grow back out of the dock (yui-minimize)
     function activate(t: HyprlandToplevel): void {
         const a = address(t);
-        if (isMinimized(t))
-            Hypr.dispatch(`hl.dsp.window.move({ window = "address:${a}", workspace = "${Hypr.activeWsId}" })`);
+        if (isMinimized(t)) {
+            Quickshell.execDetached(["yui-minimize", "restore", a]);
+            return;
+        }
         Hypr.dispatch(`hl.dsp.focus({ window = "address:${a}" })`);
         Hypr.dispatch(`hl.dsp.window.alter_zorder({ window = "address:${a}", mode = "top" })`);
     }
@@ -125,7 +127,7 @@ Singleton {
     // Hyprland ignores close requests for windows on hidden special workspaces
     function close(t: HyprlandToplevel): void {
         if (isMinimized(t))
-            activate(t);
+            Hypr.dispatch(`hl.dsp.window.move({ window = "address:${address(t)}", workspace = "${Hypr.activeWsId}" })`);
         Hypr.dispatch(`hl.dsp.window.close({ window = "address:${address(t)}" })`);
     }
 

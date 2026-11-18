@@ -1,11 +1,67 @@
 #!/bin/bash
 # Hyprland has no native minimize: Yui emulates it with a hidden special
-# workspace ("minimized").
-# Usage:
-#   yui-minimize            minimize the active window
-#   yui-minimize restore    pick a minimized window (wofi) and bring it back
-#   yui-minimize count      number of minimized windows
+# workspace ("minimized"). Windows shrink into the dock when minimized and
+# grow back out of it when restored (macOS-like), using Hyprland's window
+# move/resize animations.
+#
+#   yui-minimize [address]            minimize (default: active window)
+#   yui-minimize restore [address]    restore (no address: pick with wofi)
+#   yui-minimize count                number of minimized windows
+set -uo pipefail
+
 WS="special:minimized"
+state_dir="${XDG_RUNTIME_DIR:-/tmp}/yui-minimize"
+mkdir -p "$state_dir"
+
+dispatch() { hyprctl dispatch "$1" >/dev/null; }
+client() { hyprctl clients -j | jq -c --arg a "$1" '.[] | select(.address == $a)'; }
+
+# Small rectangle at the dock (bottom center of the window's monitor):
+# prints "x y w h"
+dock_target() {
+    local c="$1" mon
+    mon=$(hyprctl monitors -j | jq -c --argjson id "$(jq .monitor <<<"$c")" '.[] | select(.id == $id)')
+    jq -r --argjson c "$c" '
+        (if (.transform % 2) == 1 then [.height, .width] else [.width, .height] end) as [$pw, $ph]
+        | ($pw / .scale | floor) as $mw | ($ph / .scale | floor) as $mh
+        | 140 as $tw | ([60, ($c.size[1] * $tw / ([$c.size[0], 1] | max) | floor)] | max) as $th
+        | "\(.x + ($mw / 2 | floor) - ($tw / 2 | floor)) \(.y + $mh - $th - 20) \($tw) \($th)"' <<<"$mon"
+}
+
+animate_to() { # address x y w h
+    dispatch "hl.dsp.window.resize({ window = \"address:$1\", x = $4, y = $5 })"
+    dispatch "hl.dsp.window.move({ window = \"address:$1\", x = $2, y = $3 })"
+}
+
+minimize() {
+    local addr="$1" c
+    c=$(client "$addr"); [[ -n "$c" ]] || return 0
+    [[ $(jq -r .workspace.name <<<"$c") == "$WS" ]] && return 0
+
+    jq -r '"\(.at[0]) \(.at[1]) \(.size[0]) \(.size[1]) \(.workspace.id)"' <<<"$c" >"$state_dir/$addr"
+    if [[ $(jq -r .floating <<<"$c") == true && $(jq -r .fullscreen <<<"$c") == 0 ]]; then
+        read -r x y w h < <(dock_target "$c")
+        animate_to "$addr" "$x" "$y" "$w" "$h"
+        sleep 0.2
+    fi
+    dispatch "hl.dsp.window.move({ window = \"address:$addr\", workspace = \"$WS\", follow = false })"
+}
+
+restore() {
+    local addr="$1" c x y w h ws
+    c=$(client "$addr"); [[ -n "$c" ]] || return 0
+    ws=$(hyprctl activeworkspace -j | jq -r '.id')
+    if [[ -f "$state_dir/$addr" ]]; then
+        read -r x y w h ws <"$state_dir/$addr"
+        rm -f "$state_dir/$addr"
+    fi
+    dispatch "hl.dsp.window.move({ window = \"address:$addr\", workspace = \"$ws\" })"
+    dispatch "hl.dsp.focus({ window = \"address:$addr\" })"
+    dispatch "hl.dsp.window.alter_zorder({ window = \"address:$addr\", mode = \"top\" })"
+    # Grow back from the dock to where it was
+    [[ -n "${w:-}" && $(jq -r .floating <<<"$c") == true ]] && animate_to "$addr" "$x" "$y" "$w" "$h"
+    return 0
+}
 
 minimized() {
     hyprctl clients -j | jq -r --arg ws "$WS" \
@@ -13,11 +69,13 @@ minimized() {
 }
 
 case "${1:-}" in
-    "")
-        hyprctl dispatch "hl.dsp.window.move({ workspace = \"$WS\", follow = false })" >/dev/null ;;
     count)
         minimized | grep -c . || true ;;
     restore)
+        if [[ -n "${2:-}" ]]; then
+            restore "$2"
+            exit 0
+        fi
         list=$(minimized)
         [[ -n "$list" ]] || exit 0
         if [[ $(grep -c . <<<"$list") -eq 1 ]]; then
@@ -26,10 +84,11 @@ case "${1:-}" in
             choice=$(cut -f2- <<<"$list" | wofi --dmenu --prompt "Restore" --cache-file /dev/null) || exit 0
             choice=$(grep -F -m1 "$choice" <<<"$list")
         fi
-        addr=$(cut -f1 <<<"$choice")
-        ws=$(hyprctl activeworkspace -j | jq -r '.id')
-        hyprctl dispatch "hl.dsp.window.move({ window = \"address:$addr\", workspace = \"$ws\" })" >/dev/null
-        hyprctl dispatch "hl.dsp.focus({ window = \"address:$addr\" })" >/dev/null ;;
+        restore "$(cut -f1 <<<"$choice")" ;;
+    0x*)
+        minimize "$1" ;;
+    "")
+        minimize "$(hyprctl activewindow -j | jq -r '.address // empty')" ;;
     *)
-        echo "usage: yui-minimize [restore|count]" >&2; exit 1 ;;
+        echo "usage: yui-minimize [address] | restore [address] | count" >&2; exit 1 ;;
 esac
