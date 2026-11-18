@@ -32,6 +32,27 @@ Singleton {
         }
     }
 
+    // Scriptable dock settings (tests, future AI layer)
+    IpcHandler {
+        target: "dock"
+
+        function setAutoHide(on: bool): void {
+            root.setDockAutoHide(on);
+        }
+
+        function autoHide(): bool {
+            return root.dockAutoHide;
+        }
+
+        function pin(appId: string): void {
+            root.pin(appId);
+        }
+
+        function unpin(appId: string): void {
+            root.unpin(appId);
+        }
+    }
+
     // Pinned apps persist in ~/.local/state/caelestia/dock.json
     FileView {
         path: `${Paths.state}/dock.json`
