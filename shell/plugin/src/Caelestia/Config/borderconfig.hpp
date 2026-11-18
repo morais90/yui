@@ -8,7 +8,7 @@ namespace caelestia::shell::config {
 class BorderConfig : public settings::ObjectNode {
     CONFIG_NODE(BorderConfig, settings::ObjectNode)
 
-    CONFIG_PROPERTY(int, thickness, 10)
+    CONFIG_PROPERTY(int, thickness, 0) // Yui: no frame around the screen, windows reach the edges
     CONFIG_PROPERTY(int, rounding, 25)
     CONFIG_PROPERTY(int, smoothing, 20)
 

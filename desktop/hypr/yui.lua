@@ -92,8 +92,8 @@ hl.env("GTK_IM_MODULE", "simple")
 -- Refer to https://wiki.hypr.land/configuring/core/config-options/
 hl.config({
     general = {
-        gaps_in  = 5,
-        gaps_out = 20,
+        gaps_in  = 0,
+        gaps_out = 0,   -- windows use all the free space (docs/experience/windows.md)
 
         -- macOS-like: a hairline border, depth comes from the shadow
         border_size = 1,

@@ -15,8 +15,9 @@ resized with the mouse. The system never surprises you with where a window goes.
   Clicking a window behind another brings it to the front.
 - **The pointer stays put.** The system never moves the mouse on its own, whatever opens or gets
   focus.
-- **Zoom (green button).** The window grows to fill the free space between the bar and the dock;
-  clicking again brings back its previous size and place. Apps' own maximize buttons do the same.
+- **Zoom (green button).** The window grows to fill all the free space: from the bar to the
+  screen edges, down to the dock if it is always shown. No gaps or frame around it. Clicking
+  again brings back its previous size and place. Apps' own maximize buttons do the same.
 - **Minimize (yellow button).** The window shrinks into the dock with an animation and appears
   there until you click it to bring it back.
 - **Snapping.** Dragging a window to a screen edge shows a preview of where it will land:
@@ -30,6 +31,8 @@ resized with the mouse. The system never surprises you with where a window goes.
   windows on the way to something else.
 - **Zoom fills the free area, not the whole screen.** The bar and the dock stay visible, so you
   never lose your place.
+- **No gaps around or between windows.** Space on screen goes to content; the padding and the
+  frame Caelestia drew around the screen are gone (principle 3).
 - **Snapping is a Hyprland plugin (`yui-snap`)**, not a script: it reacts during the drag, so the
   preview appears instantly.
 - **Maximized windows push others behind them when clicked**, so an app's own maximize behaves
