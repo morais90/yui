@@ -1,6 +1,6 @@
 # Maintainer: Willian Morais
 pkgname=yui-desktop
-pkgver=0.8.0
+pkgver=0.8.1
 pkgrel=1
 pkgdesc="Yui desktop: Hyprland defaults, idle, helper scripts"
 arch=('any')
@@ -14,6 +14,8 @@ depends=(
     yui-shell yui-hyprland-plugins quickshell-git hypridle wofi
     network-manager-applet blueman pavucontrol
     # tools used by keybinds and scripts
+    # archives: Ark (Dolphin's "Extract here", opens .zip/.7z/.tar) and its backends
+    ark unzip zip 7zip
     ghostty xdg-terminal-exec dolphin grim slurp wl-clipboard cliphist brightnessctl playerctl
     xdg-user-dirs xdg-utils jq
     # title bars (AUR for now; will be built into the Yui repository)
