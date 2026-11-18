@@ -14,6 +14,8 @@ In practice:
 - No daemons, polling or services for features that can be event-driven or on demand.
 - Animations are short and can be interrupted; they show what happened, they don't delay it.
 - Fewer dependencies over more: every package we add must earn its place.
+- Prefer software written in Rust when choosing or building parts of Yui; over time, we
+  rewrite our own pieces in Rust where it makes sense.
 
 ## 2. A delight to use
 

@@ -1,0 +1,47 @@
+# Yui default apps (system-wide; your ~/.config/mimeapps.list wins).
+# Text and code open in Zed (docs/experience/apps.md).
+[Default Applications]
+text/plain=dev.zed.Zed.desktop
+text/markdown=dev.zed.Zed.desktop
+text/x-markdown=dev.zed.Zed.desktop
+text/csv=dev.zed.Zed.desktop
+text/x-log=dev.zed.Zed.desktop
+application/json=dev.zed.Zed.desktop
+application/toml=dev.zed.Zed.desktop
+application/x-yaml=dev.zed.Zed.desktop
+application/yaml=dev.zed.Zed.desktop
+application/xml=dev.zed.Zed.desktop
+text/xml=dev.zed.Zed.desktop
+text/x-python=dev.zed.Zed.desktop
+text/x-python3=dev.zed.Zed.desktop
+text/rust=dev.zed.Zed.desktop
+text/x-rust=dev.zed.Zed.desktop
+text/x-csrc=dev.zed.Zed.desktop
+text/x-chdr=dev.zed.Zed.desktop
+text/x-c++src=dev.zed.Zed.desktop
+text/x-c++hdr=dev.zed.Zed.desktop
+text/x-go=dev.zed.Zed.desktop
+text/x-java=dev.zed.Zed.desktop
+text/javascript=dev.zed.Zed.desktop
+application/javascript=dev.zed.Zed.desktop
+application/x-javascript=dev.zed.Zed.desktop
+text/x-typescript=dev.zed.Zed.desktop
+application/typescript=dev.zed.Zed.desktop
+text/css=dev.zed.Zed.desktop
+text/x-scss=dev.zed.Zed.desktop
+text/x-sql=dev.zed.Zed.desktop
+application/sql=dev.zed.Zed.desktop
+text/x-lua=dev.zed.Zed.desktop
+application/x-shellscript=dev.zed.Zed.desktop
+text/x-shellscript=dev.zed.Zed.desktop
+text/x-makefile=dev.zed.Zed.desktop
+text/x-cmake=dev.zed.Zed.desktop
+text/x-patch=dev.zed.Zed.desktop
+text/x-diff=dev.zed.Zed.desktop
+application/x-desktop=dev.zed.Zed.desktop
+text/x-readme=dev.zed.Zed.desktop
+text/x-tex=dev.zed.Zed.desktop
+application/x-zerosize=dev.zed.Zed.desktop
+application/x-ini=dev.zed.Zed.desktop
+text/x-ini=dev.zed.Zed.desktop
+application/x-wine-extension-ini=dev.zed.Zed.desktop
