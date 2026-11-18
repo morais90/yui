@@ -3,7 +3,6 @@ import Quickshell.Widgets
 import Caelestia.Config
 import qs.components
 import qs.services
-import qs.modules.dock.services
 
 // One app in the dock: icon, running indicator, name tooltip.
 // Click launches it, or focuses / cycles through its windows.
@@ -15,6 +14,8 @@ Item {
     property int size: 46
     property real maxMagnify: 1.45
     property real pointerX: -10000
+
+    signal menuRequested
 
     readonly property bool running: app.windows.length > 0
     readonly property bool focused: app.windows.some(w => w.activated)
@@ -52,7 +53,7 @@ Item {
         implicitSize: root.size * root.maxMagnify
         transformOrigin: Item.Bottom
         scale: root.magnify / root.maxMagnify
-        source: DockWindows.icon(root.app.appId)
+        source: YuiWindows.icon(root.app.appId)
         mipmap: true
         asynchronous: true
 
@@ -115,7 +116,7 @@ Item {
         implicitHeight: label.implicitHeight + Tokens.padding.small * 2
         radius: Tokens.rounding.full
         color: Colours.palette.m3inverseSurface
-        opacity: area.containsMouse ? 1 : 0
+        opacity: area.containsMouse && !root.dock.menuOpen ? 1 : 0
         visible: opacity > 0
 
         Behavior on opacity {
@@ -128,7 +129,7 @@ Item {
             id: label
 
             anchors.centerIn: parent
-            text: DockWindows.name(root.app.appId)
+            text: YuiWindows.name(root.app.appId)
             color: Colours.palette.m3inverseOnSurface
             font: Tokens.font.body.small
         }
@@ -140,16 +141,20 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        acceptedButtons: Qt.LeftButton | Qt.MiddleButton
+        acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
         onClicked: mouse => {
+            if (mouse.button === Qt.RightButton) {
+                root.menuRequested();
+                return;
+            }
             const wins = root.app.windows;
             if (wins.length === 0 || mouse.button === Qt.MiddleButton) {
-                DockWindows.launch(root.app.appId);
+                YuiWindows.launch(root.app.appId);
                 bounceAnim.restart();
                 return;
             }
             const current = wins.findIndex(w => w.activated);
-            DockWindows.activate(wins[(current + 1) % wins.length]);
+            YuiWindows.activate(wins[(current + 1) % wins.length]);
         }
     }
 }

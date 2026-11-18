@@ -4,7 +4,6 @@ import Quickshell.Widgets
 import Caelestia.Config
 import qs.components
 import qs.services
-import qs.modules.dock.services
 
 // A minimized window: thumbnail with the app icon as a badge.
 // Left click restores it, right click closes it.
@@ -34,7 +33,7 @@ Item {
             visible: !preview.hasContent
             anchors.centerIn: parent
             implicitSize: parent.height * 0.6
-            source: DockWindows.icon(DockWindows.appId(root.win))
+            source: YuiWindows.icon(YuiWindows.appId(root.win))
         }
     }
 
@@ -43,7 +42,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.margins: -Tokens.padding.extraSmall
         implicitSize: root.implicitHeight * 0.45
-        source: DockWindows.icon(DockWindows.appId(root.win))
+        source: YuiWindows.icon(YuiWindows.appId(root.win))
     }
 
     MouseArea {
@@ -53,6 +52,6 @@ Item {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: mouse => mouse.button === Qt.RightButton ? DockWindows.close(root.win) : DockWindows.activate(root.win)
+        onClicked: mouse => mouse.button === Qt.RightButton ? YuiWindows.close(root.win) : YuiWindows.activate(root.win)
     }
 }

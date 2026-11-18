@@ -3,14 +3,64 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Hyprland
+import Quickshell.Io
 import qs.services
+import qs.utils
 
-// Window helpers for the Yui dock: grouping by app, minimize/restore, launch.
+// Yui window helpers shared by the dock and the window switcher:
+// grouping by app, recency, minimize/restore, launch and pinned apps.
 // Minimized windows live on the special:minimized workspace (see yui-minimize).
 Singleton {
     id: root
 
     readonly property string minimizedWorkspace: "special:minimized"
+    readonly property list<string> pinned: dockState.pinned
+
+    // Most recently used window addresses (front = last focused)
+    property list<string> mru: []
+
+    Connections {
+        target: Hypr
+
+        function onActiveToplevelChanged(): void {
+            const t = Hypr.activeToplevel;
+            if (!t)
+                return;
+            const a = root.address(t);
+            root.mru = [a, ...root.mru.filter(x => x !== a)];
+        }
+    }
+
+    // Pinned apps persist in ~/.local/state/caelestia/dock.json
+    FileView {
+        path: `${Paths.state}/dock.json`
+        watchChanges: true
+        onFileChanged: reload()
+        onAdapterUpdated: writeAdapter()
+        onLoadFailed: err => {
+            if (err === FileViewError.FileNotFound)
+                writeAdapter();
+        }
+
+        JsonAdapter {
+            id: dockState
+
+            property list<string> pinned: ["org.kde.dolphin", "google-chrome", "com.mitchellh.ghostty"]
+        }
+    }
+
+    function isPinned(appId: string): bool {
+        return pinned.includes(appId);
+    }
+
+    function pin(appId: string): void {
+        if (!isPinned(appId))
+            dockState.pinned = [...dockState.pinned, appId];
+    }
+
+    function unpin(appId: string): void {
+        dockState.pinned = dockState.pinned.filter(id => id !== appId);
+    }
 
     function address(t: HyprlandToplevel): string {
         const a = t.address;
@@ -46,6 +96,17 @@ Singleton {
         return Hypr.toplevels.values.filter(t => t.workspace && (t.workspace.id > 0 || isMinimized(t)));
     }
 
+    // Most recent first; falls back to Hyprland's focus history for unseen windows
+    function byRecency(list: list<HyprlandToplevel>): list<HyprlandToplevel> {
+        const rank = t => {
+            const i = mru.indexOf(address(t));
+            if (i >= 0)
+                return i;
+            return 1000 + (t.lastIpcObject?.focusHistoryID ?? 1000);
+        };
+        return [...list].sort((a, b) => rank(a) - rank(b));
+    }
+
     // Restore if minimized, then focus and raise
     function activate(t: HyprlandToplevel): void {
         const a = address(t);
@@ -65,4 +126,6 @@ Singleton {
     function launch(appId: string): void {
         entry(appId)?.execute();
     }
+
+    Component.onCompleted: Hyprland.refreshToplevels()
 }

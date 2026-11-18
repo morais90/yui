@@ -1,4 +1,4 @@
--- Yui Shell integration (shell/ = Caelestia fork, desktop/dock = Yui dock).
+-- Yui Shell integration (shell/ = Caelestia fork with the Yui dock and switcher).
 -- Most features are reachable with the mouse; these keys are shortcuts.
 
 local release = { release = true }
@@ -13,14 +13,6 @@ hl.bind("SUPER + N",           hl.dsp.global("caelestia:sidebar"))     -- notifi
 hl.bind("SUPER + K",           hl.dsp.global("caelestia:showall"))     -- launcher + dashboard + OSD
 hl.bind("CTRL + ALT + C",      hl.dsp.global("caelestia:clearNotifs"), { locked = true })
 
--- Alt+Tab / Alt+Shift+Tab: Yui window switcher (desktop/dock)
-hl.bind("ALT + TAB",         hl.dsp.global("quickshell:switcher-next"))
-hl.bind("ALT + SHIFT + TAB", hl.dsp.global("quickshell:switcher-prev"))
-
--- Glass: blur behind the Yui dock and switcher
-hl.layer_rule({
-    name  = "yui-dock-glass",
-    match = { namespace = "^yui-(dock|switcher)$" },
-    blur  = true,
-    ignore_alpha = 0.2,
-})
+-- Alt+Tab / Alt+Shift+Tab: window switcher (shell/modules/switcher)
+hl.bind("ALT + TAB",         hl.dsp.global("caelestia:switcherNext"))
+hl.bind("ALT + SHIFT + TAB", hl.dsp.global("caelestia:switcherPrev"))

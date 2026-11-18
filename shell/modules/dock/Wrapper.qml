@@ -15,6 +15,8 @@ Item {
     readonly property bool shouldBeActive: !fullscreen && !(screenState.launcher && Config.launcher.enabled)
     property real offsetScale: shouldBeActive ? 0 : 1
 
+    readonly property bool menuOpen: content.menuOpen
+
     visible: offsetScale < 1
     anchors.bottomMargin: (-implicitHeight - 5) * offsetScale
     implicitWidth: content.implicitWidth

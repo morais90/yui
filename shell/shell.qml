@@ -12,6 +12,7 @@ import qs.modules.areapicker
 import qs.modules.background
 import qs.modules.drawers
 import qs.modules.lock
+import qs.modules.switcher
 import qs.daemons
 
 ShellRoot {
@@ -44,6 +45,7 @@ ShellRoot {
     Background {}
     Drawers {}
     AreaPicker {}
+    Switcher {}
     Lock {
         id: lock
     }

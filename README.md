@@ -28,7 +28,7 @@ Defaults live in `/usr/share/yui`. User configs in `~/.config` always take prece
 |---|---|
 | `shell/` | Yui Shell, imported from [Caelestia shell](https://github.com/caelestia-dots/shell) (GPL-3.0) |
 | `cli/` | Yui CLI, imported from [Caelestia CLI](https://github.com/caelestia-dots/cli) (GPL-3.0) |
-| `desktop/` | Files installed by `yui-desktop` (configs, scripts, the dock in `desktop/dock`) |
+| `desktop/` | Files installed by `yui-desktop` (configs, scripts, service drop-ins) |
 | `pkgs/` | One `PKGBUILD` per Yui package; `pkgs/third-party` holds reviewed recipes for dependencies outside the official repos |
 | `iso/` | (planned) archiso profile |
 | `docs/` | Documentation and design decisions |
@@ -49,7 +49,6 @@ yui-setup          # prepares the user's ~/.config (--reset restores Yui's defau
 | `yui-brightness` | Internal display brightness (picks the right device on hybrid laptops) |
 | `yui-lock` | Locks the screen (Yui Shell lock screen) |
 | `yui-minimize` | Minimize / restore windows (Hyprland has no native minimize) |
-| `yui-dock` | Starts the Yui dock and window switcher |
 | `yui-config-run` | Chooses between the user's config and Yui's default |
 
 ## Windows
@@ -78,18 +77,19 @@ Yui adds:
 - **Dock** (`shell/modules/dock`): a drawer that grows out of the bottom border like the
   other panels, with the same wallpaper-based colors. Pinned and running apps, magnification
   on hover, launch bounce, running/focused indicators. Minimized windows appear on the right
-  with a thumbnail: left click restores, right click closes. It slides away while the
+  with a thumbnail: left click restores, right click closes. Right click an app to keep it in
+  or remove it from the dock (saved in `~/.local/state/caelestia/dock.json`). It slides away while the
   launcher is open and in fullscreen, and windows don't go under it.
-- **Window switcher** (`desktop/dock`, `yui-dock` service): `Alt+Tab` / `Alt+Shift+Tab` show live previews of every window, most
+- **Window switcher** (`shell/modules/switcher`): `Alt+Tab` / `Alt+Shift+Tab` show live previews of every window, most
   recent first. Release `Alt` or click a preview to switch; `Esc` cancels.
-- **IPC**: `qs -p /usr/share/yui/dock ipc call switcher next|prev|commit|cancel`, the entry
+- **IPC**: `qs -c caelestia ipc call switcher next|prev|commit|cancel`, the entry
   point for scripts and the future AI layer.
 
 ## Session startup
 
 The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens in three layers:
 
-1. **systemd user services**: yui-shell, yui-dock, hypridle, hyprpolkitagent
+1. **systemd user services**: yui-shell, hypridle, hyprpolkitagent
 2. **`/etc/xdg/autostart`** (run by uwsm): nm-applet, blueman-applet
 3. **`hl.on("hyprland.start")`** in `yui.lua`: cliphist
 
@@ -121,7 +121,7 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] Yui Shell phase 1: dock and window switcher (Quickshell)
 - [x] Yui Shell based on Caelestia (bar, launcher, dashboard, notifications, lock)
 - [x] Dock as a native Yui Shell drawer
-- [ ] Window switcher in the Yui Shell's visual language
+- [x] Window switcher in the Yui Shell's visual language
 - [ ] Overview + search (Mission Control / Spotlight)
 - [ ] Rebrand the shell (names, colors, identity)
 - [ ] Yui pacman repository (GitHub Releases + Actions), including hyprbars from AUR

@@ -1,8 +1,8 @@
 # Maintainer: Willian Morais
 pkgname=yui-desktop
-pkgver=0.4.0
+pkgver=0.5.0
 pkgrel=1
-pkgdesc="Yui desktop: Hyprland defaults, Yui dock and window switcher, idle, helper scripts"
+pkgdesc="Yui desktop: Hyprland defaults, idle, helper scripts"
 arch=('any')
 url="https://github.com/morais90/yui"
 license=('MIT')
@@ -10,7 +10,7 @@ depends=(
     # session
     hyprland uwsm sddm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
     hyprpolkitagent qt5-wayland qt6-wayland
-    # shell: Yui Shell (Caelestia fork) + Yui dock
+    # shell: Yui Shell (Caelestia fork, includes the dock and switcher)
     yui-shell quickshell-git hypridle wofi
     network-manager-applet blueman pavucontrol
     # tools used by keybinds and scripts
@@ -35,8 +35,6 @@ package() {
     install -Dm644 "$src/skel/ghostty/config.ghostty"     "$pkgdir/etc/skel/.config/ghostty/config.ghostty"
     install -Dm644 "$src/xdg/xdg-terminals.list"          "$pkgdir/etc/xdg/xdg-terminals.list"
     install -Dm644 -t "$pkgdir/usr/lib/systemd/user"      "$src"/systemd/user/*.service
-    install -dm755 "$pkgdir/usr/share/yui/dock"
-    cp -r "$src"/dock/. "$pkgdir/usr/share/yui/dock/"
     local unit
     for unit in "$src"/systemd/user/*.service.d; do
         install -Dm644 -t "$pkgdir/usr/lib/systemd/user/$(basename "$unit")" "$unit"/*
