@@ -4,7 +4,7 @@
 # Hyprland update (pkgrel bump).
 pkgname=yui-hyprland-plugins
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 _hyprver=0.57.2
 pkgdesc="Yui Hyprland plugins: yui-snap (macOS-style window snapping)"
 arch=('x86_64')
