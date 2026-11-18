@@ -48,6 +48,7 @@ yui-setup          # prepares the user's ~/.config (--reset restores Yui's defau
 | `yui-setup` | Creates the user's `hyprland.lua` pointing to Yui's defaults |
 | `yui-brightness` | Internal display brightness (picks the right device on hybrid laptops) |
 | `yui-lock` | Locks the screen (Yui Shell lock screen) |
+| `yui-maximize` | Zoom (macOS-style): fills the free area of the monitor, toggles back; used by the maximize button |
 | `yui-minimize` | Minimize / restore windows (Hyprland has no native minimize) |
 | `yui-config-run` | Chooses between the user's config and Yui's default |
 

@@ -6,9 +6,9 @@ hl.config({
 })
 
 ------------------ KEYBINDS ------------------
--- Fullscreen / maximize (keeps the bar visible)
+-- Fullscreen (games, videos) / maximize (zoom: fills the free area, keeps bar and dock)
 hl.bind(mainMod .. " + F",         hl.dsp.window.fullscreen({ mode = "fullscreen" }))
-hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "maximized" }))
+hl.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd("yui-maximize"))
 
 -- Move window: Super+Shift+arrows
 for _, d in ipairs({ "left", "right", "up", "down" }) do

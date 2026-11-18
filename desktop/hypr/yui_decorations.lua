@@ -51,7 +51,7 @@ hl.config({
             bar_precedence_over_border = true,
             icon_on_hover         = true,
             inactive_button_color = "rgb(585b70)",
-            on_double_click       = [[hyprctl dispatch 'hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" })']],
+            on_double_click       = [[yui-maximize]],
         },
     },
 })
@@ -63,7 +63,7 @@ hl.plugin.hyprbars.add_button({
 })
 hl.plugin.hyprbars.add_button({
     bg_color = "rgb(a6e3a1)", fg_color = "rgb(1e1e2e)", size = 14, icon = "󰖯",
-    action = [[hyprctl dispatch 'hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" })']],
+    action = [[yui-maximize]],
 })
 hl.plugin.hyprbars.add_button({
     bg_color = "rgb(f9e2af)", fg_color = "rgb(1e1e2e)", size = 14, icon = "󰖰",

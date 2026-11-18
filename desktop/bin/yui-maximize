@@ -1,0 +1,54 @@
+#!/bin/bash
+# macOS-style zoom: grows a floating window to fill the free area of its
+# monitor (outside the bar, dock and gaps) and restores it on the next call.
+# Unlike Hyprland's "maximized" fullscreen state, the window stays a normal
+# floating window, so clicking any window always brings it to the front.
+#
+#   yui-maximize [address]    toggle (default: active window)
+set -euo pipefail
+
+state_dir="${XDG_RUNTIME_DIR:-/tmp}/yui-maximize"
+mkdir -p "$state_dir"
+
+if [[ -n "${1:-}" ]]; then
+    client=$(hyprctl clients -j | jq -c --arg a "$1" '.[] | select(.address == $a)')
+else
+    client=$(hyprctl activewindow -j)
+fi
+[[ -n "$client" && "$client" != "{}" ]] || exit 0
+
+addr=$(jq -r .address <<<"$client")
+win="address:$addr"
+state="$state_dir/$addr"
+dispatch() { hyprctl dispatch "$1" >/dev/null; }
+
+if [[ -f "$state" ]]; then
+    # Restore the previous geometry
+    read -r x y w h <"$state"
+    rm -f "$state"
+else
+    # Leave Hyprland fullscreen / maximized states first
+    if [[ $(jq -r .fullscreen <<<"$client") != 0 ]]; then
+        dispatch "hl.dsp.window.fullscreen({ window = \"$win\", mode = \"maximized\", action = \"unset\" })"
+        dispatch "hl.dsp.window.fullscreen({ window = \"$win\", mode = \"fullscreen\", action = \"unset\" })"
+        client=$(hyprctl clients -j | jq -c --arg a "$addr" '.[] | select(.address == $a)')
+    fi
+    jq -r '"\(.at[0]) \(.at[1]) \(.size[0]) \(.size[1])"' <<<"$client" >"$state"
+
+    mon=$(hyprctl monitors -j | jq -c --argjson id "$(jq .monitor <<<"$client")" '.[] | select(.id == $id)')
+    read -r gt gr gb gl < <(hyprctl getoption general:gaps_out -j | jq -r '.css' | awk '{print $1, ($2==""?$1:$2), ($3==""?$1:$3), ($4==""?($2==""?$1:$2):$4)}')
+    read -r x y w h < <(jq -r --argjson gt "$gt" --argjson gr "$gr" --argjson gb "$gb" --argjson gl "$gl" '
+        (if (.transform % 2) == 1 then [.height, .width] else [.width, .height] end) as [$pw, $ph]
+        | ($pw / .scale | floor) as $mw | ($ph / .scale | floor) as $mh
+        | .reserved as [$l, $t, $r, $b]
+        | "\(.x + $l + $gl) \(.y + $t + $gt) \($mw - $l - $r - $gl - $gr) \($mh - $t - $b - $gt - $gb)"' <<<"$mon")
+
+    if [[ $(jq -r .floating <<<"$client") != true ]]; then
+        dispatch "hl.dsp.window.float({ window = \"$win\", action = \"enable\" })"
+    fi
+fi
+
+dispatch "hl.dsp.window.resize({ window = \"$win\", x = $w, y = $h })"
+dispatch "hl.dsp.window.move({ window = \"$win\", x = $x, y = $y })"
+dispatch "hl.dsp.focus({ window = \"$win\" })"
+dispatch "hl.dsp.window.alter_zorder({ window = \"$win\", mode = \"top\" })"
