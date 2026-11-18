@@ -22,8 +22,6 @@ The names we use for each part of the screen, so we always mean the same thing.
 
 - **Popout**: a small card that grows out of the bar next to the item it belongs to (calendar,
   network, Bluetooth, sound, battery, tray menus).
-- **Dashboard**: the panel that drops from the top edge, with tabs for an overview,
-  media and performance.
 - **Sidebar**: the panel on the right edge with notifications (`Super+N`).
 - **Utilities**: the small panel in the bottom-right corner (quick toggles, recording).
 - **Notification**: the card that pops up in the corner when an app sends a message.

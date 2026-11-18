@@ -7,7 +7,6 @@ import Caelestia.Config
 import qs.components
 import qs.services
 import qs.modules.bar.popouts.kblayout
-import qs.modules.dashboard.dash as Dash
 
 Item {
     id: root
@@ -37,7 +36,7 @@ Item {
                 implicitWidth: 340
                 implicitHeight: calendar.implicitHeight
 
-                Dash.Calendar {
+                Calendar {
                     id: calendar
 
                     screenState: ShellState.forScreen(root.screen)

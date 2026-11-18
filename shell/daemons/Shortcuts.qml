@@ -23,19 +23,6 @@ Scope {
     // qmllint disable unresolved-type
     CustomShortcut {
         // qmllint enable unresolved-type
-        name: "dashboard"
-        description: "Toggle dashboard"
-        onPressed: {
-            if (root.hasFullscreen)
-                return;
-            const screenState = ShellState.forActive();
-            screenState.dashboard = !screenState.dashboard;
-        }
-    }
-
-    // qmllint disable unresolved-type
-    CustomShortcut {
-        // qmllint enable unresolved-type
         name: "session"
         description: "Toggle session menu"
         onPressed: {
@@ -75,7 +62,7 @@ Scope {
     IpcHandler {
         function toggle(drawer: string): void {
             if (list().split("\n").includes(drawer)) {
-                if (root.hasFullscreen && ["session", "dashboard"].includes(drawer))
+                if (root.hasFullscreen && ["session"].includes(drawer))
                     return;
                 const screenState = ShellState.forActive();
                 screenState[drawer] = !screenState[drawer];

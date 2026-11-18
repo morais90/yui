@@ -88,28 +88,6 @@ PageBase {
 
         StepperRow {
             first: true
-            label: Tr.tr("Media refresh")
-            // TRANSLATORS: ms is the millisecond unit, leave it untranslated
-            subtext: Tr.tr("How often the media position updates (ms)")
-            value: GlobalConfig.dashboard.mediaUpdateInterval
-            from: 100
-            to: 2000
-            stepSize: 50
-            onMoved: v => GlobalConfig.dashboard.mediaUpdateInterval = v
-        }
-
-        StepperRow {
-            label: Tr.tr("System stats refresh")
-            // TRANSLATORS: CPU and GPU are hardware abbreviations, leave them untranslated
-            subtext: Tr.tr("CPU, memory and GPU update interval (seconds)")
-            value: GlobalConfig.dashboard.resourceUpdateInterval / 1000
-            from: 0.5
-            to: 10
-            stepSize: 0.5
-            onMoved: v => GlobalConfig.dashboard.resourceUpdateInterval = Math.round(v * 1000)
-        }
-
-        StepperRow {
             last: true
             label: Tr.tr("Wi-Fi rescan")
             subtext: Tr.tr("How often available networks are rescanned (seconds)")
