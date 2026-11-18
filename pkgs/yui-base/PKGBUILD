@@ -1,6 +1,6 @@
 # Maintainer: Willian Morais
 pkgname=yui-base
-pkgver=0.1.0
+pkgver=0.2.0
 pkgrel=1
 pkgdesc="Yui base system: network, audio, bluetooth and everyday tools"
 arch=('any')
@@ -9,7 +9,8 @@ license=('MIT')
 depends=(
     networkmanager bluez bluez-utils
     pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber gst-plugin-pipewire sof-firmware
-    sudo git base-devel nano vim htop wget smartmontools
+    sudo git less base-devel nano vim htop wget smartmontools
+    docker docker-compose docker-buildx
     btrfs-progs zram-generator
 )
 install=yui-base.install

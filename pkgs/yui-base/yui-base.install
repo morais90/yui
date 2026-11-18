@@ -1,3 +1,26 @@
+# Add every regular user (UID 1000-59999) to a group, so tools work without sudo.
+_add_users_to() {
+    local group=$1
+    getent passwd | awk -F: '$3 >= 1000 && $3 < 60000 {print $1}' | while read -r user; do
+        gpasswd -a "$user" "$group" >/dev/null 2>&1
+    done
+}
+
+# Docker starts on first use (socket activation), not at boot.
+_docker() {
+    systemctl disable docker.service >/dev/null 2>&1
+    systemctl enable docker.socket >/dev/null 2>&1
+    _add_users_to docker
+}
+
 post_install() {
     systemctl enable NetworkManager.service bluetooth.service >/dev/null 2>&1
+    _docker
+}
+
+post_upgrade() {
+    # Docker arrived in 0.2.0; set it up on systems that already had yui-base
+    if [ "$(vercmp "$2" 0.2.0)" -lt 0 ]; then
+        _docker
+    fi
 }
