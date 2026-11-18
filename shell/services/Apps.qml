@@ -8,16 +8,16 @@ import qs.utils
 Searcher {
     id: root
 
+    // Every app the shell starts runs in its own systemd unit (uwsm app), so
+    // restarting the shell never takes open apps down with it.
     function launch(entry: DesktopEntry): void {
         appDb.incrementFrequency(entry.id);
+        Quickshell.execDetached(["uwsm", "app", "--", `${entry.id}.desktop`]);
+    }
 
-        if (entry.runInTerminal)
-            Quickshell.execDetached({
-                command: [...GlobalConfig.general.apps.terminal, `${Quickshell.shellDir}/assets/wrap_term_launch.sh`, ...entry.command],
-                workingDirectory: entry.workingDirectory
-            });
-        else
-            entry.execute();
+    // Open a file or URL in its default app, also in its own unit
+    function open(target: string): void {
+        Quickshell.execDetached(["uwsm", "app", "--", "xdg-open", target]);
     }
 
     function search(search: string): var {

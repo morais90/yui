@@ -97,9 +97,9 @@ StyledWindow {
         out.push(...settings.slice(0, 4));
 
         for (const f of fileResults.slice(0, 6))
-            out.push(item(qsTr("Files"), f.name, f.dir, Quickshell.iconPath(f.icon, "text-x-generic"), "", () => Quickshell.execDetached(["xdg-open", f.path])));
+            out.push(item(qsTr("Files"), f.name, f.dir, Quickshell.iconPath(f.icon, "text-x-generic"), "", () => Apps.open(f.path)));
 
-        out.push(item(qsTr("Web"), qsTr("Search the web for “%1”").arg(q), "Google", "", "travel_explore", () => Quickshell.execDetached(["xdg-open", `https://www.google.com/search?q=${encodeURIComponent(q)}`])));
+        out.push(item(qsTr("Web"), qsTr("Search the web for “%1”").arg(q), "Google", "", "travel_explore", () => Apps.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`)));
         return out;
     }
 

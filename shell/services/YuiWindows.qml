@@ -175,7 +175,9 @@ Singleton {
     }
 
     function launch(appId: string): void {
-        entry(appId)?.execute();
+        const e = entry(appId);
+        if (e)
+            Apps.launch(e);
     }
 
     Component.onCompleted: Hyprland.refreshToplevels()

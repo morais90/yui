@@ -1,5 +1,5 @@
 [Unit]
-Description=Yui Shell (bar, launcher, dashboard, notifications, lock)
+Description=Yui Shell (bar, dock, Spotlight, notifications, lock)
 Documentation=https://github.com/morais90/yui
 PartOf=graphical-session.target
 After=graphical-session.target
@@ -10,6 +10,8 @@ ExecStart=/usr/bin/qs -c caelestia -n
 Restart=on-failure
 RestartSec=2
 Slice=app-graphical.slice
+# Restarting the shell stops only the shell, never apps that ended up in its group
+KillMode=process
 
 [Install]
 WantedBy=graphical-session.target
