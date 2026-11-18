@@ -83,7 +83,10 @@ Yui adds:
   launcher is open and in fullscreen, and windows don't go under it.
 - **Window switcher** (`shell/modules/switcher`): `Alt+Tab` / `Alt+Shift+Tab` show live previews of every window, most
   recent first. Release `Alt` or click a preview to switch; `Esc` cancels.
-- **IPC**: `qs -c caelestia ipc call switcher next|prev|commit|cancel`, the entry
+- **Mission Control** (`shell/modules/overview`): `Super+↑` or a three-finger swipe up shows
+  every window of each screen side by side, zooming out from their real positions. Click a
+  window to bring it to the front; `Esc` or click the background to go back.
+- **IPC**: `qs -c caelestia ipc call switcher next|prev|commit|cancel`, `... overview toggle`, the entry
   point for scripts and the future AI layer.
 
 ## Session startup
@@ -123,7 +126,10 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] Yui Shell based on Caelestia (bar, launcher, dashboard, notifications, lock)
 - [x] Dock as a native Yui Shell drawer
 - [x] Window switcher in the Yui Shell's visual language
-- [ ] Overview + search (Mission Control / Spotlight)
+- [x] Mission Control (Super+Up or three-finger swipe up)
+- [x] macOS-style windows: traffic lights, click to focus, zoom, minimize into the dock, dock auto-hide
+- [ ] Snap windows to screen halves by dragging them to the edges
+- [ ] Spotlight-style search
 - [x] Yui logo in the bar, dashboard, lock screen and About page
 - [ ] Rebrand the remaining identifiers (`caelestia` command, config paths) and os-release
 - [ ] Yui pacman repository (GitHub Releases + Actions), including hyprbars from AUR

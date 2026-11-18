@@ -16,3 +16,19 @@ hl.bind("CTRL + ALT + C",      hl.dsp.global("caelestia:clearNotifs"), { locked 
 -- Alt+Tab / Alt+Shift+Tab: window switcher (shell/modules/switcher)
 hl.bind("ALT + TAB",         hl.dsp.global("caelestia:switcherNext"))
 hl.bind("ALT + SHIFT + TAB", hl.dsp.global("caelestia:switcherPrev"))
+
+-- Mission Control: Super+Up or a three-finger swipe up (shell/modules/overview)
+hl.bind("SUPER + up", hl.dsp.global("caelestia:overview"))
+hl.gesture({
+    fingers   = 3,
+    direction = "up",
+    action    = { finish = function() hl.dispatch(hl.dsp.global("caelestia:overview")) end },
+})
+
+-- Blur behind the Mission Control backdrop
+hl.layer_rule({
+    name  = "yui-overview-blur",
+    match = { namespace = "^caelestia-overview$" },
+    blur  = true,
+    ignore_alpha = 0.1,
+})
