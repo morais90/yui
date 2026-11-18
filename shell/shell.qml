@@ -55,6 +55,7 @@ ShellRoot {
     BatteryMonitor {}
     GameMode {}
     IdleInhibit {}
+    YuiHyprScheme {}
     IdleMonitors {
         lock: lock
     }

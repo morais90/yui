@@ -36,12 +36,23 @@ if not hl.plugin.hyprbars then
     return  -- plugin failed to load (or config is only being verified)
 end
 
+-- Colors follow the Yui Shell scheme (generated from the wallpaper by the
+-- Yui CLI in ~/.config/hypr/scheme/current.lua), with dark fallbacks.
+local scheme = { surfaceContainer = "201f23", onSurfaceVariant = "c8c5d1", outlineVariant = "47464f" }
+do
+    local path = (os.getenv("XDG_CONFIG_HOME") or (os.getenv("HOME") .. "/.config")) .. "/hypr/scheme/current.lua"
+    local ok, loaded = pcall(dofile, path)
+    if ok and type(loaded) == "table" then
+        for k, v in pairs(loaded) do scheme[k] = v end
+    end
+end
+
 hl.config({
     plugin = {
         hyprbars = {
             bar_height            = 32,
-            bar_color             = "rgb(201f23)",
-            ["col.text"]          = "rgb(c8c5d1)",
+            bar_color             = "rgb(" .. scheme.surfaceContainer .. ")",
+            ["col.text"]          = "rgb(" .. scheme.onSurfaceVariant .. ")",
             bar_text_font         = "Rubik Medium",
             bar_text_size         = 10,
             bar_text_align        = "center",
@@ -51,7 +62,7 @@ hl.config({
             bar_part_of_window    = true,
             bar_precedence_over_border = true,
             icon_on_hover         = true,
-            inactive_button_color = "rgb(47464f)",  -- grey lights on inactive windows
+            inactive_button_color = "rgb(" .. scheme.outlineVariant .. ")",  -- grey lights on inactive windows
             on_double_click       = [[yui-maximize]],
         },
     },
