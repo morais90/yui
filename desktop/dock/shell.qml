@@ -3,17 +3,8 @@ import QtQuick
 import Quickshell
 import Quickshell.Hyprland
 
-// Yui Shell entry point.
+// Yui window switcher (the dock lives in the Yui Shell: shell/modules/dock).
 ShellRoot {
-    // One dock per monitor
-    Variants {
-        model: Quickshell.screens
-        delegate: Dock {
-            required property var modelData
-            screen: modelData
-        }
-    }
-
     Switcher { id: switcher }
 
     // Triggered from Hyprland: hl.dsp.global("quickshell:switcher-next")

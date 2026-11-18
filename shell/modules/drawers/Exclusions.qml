@@ -11,6 +11,7 @@ Scope {
 
     required property ShellScreen screen
     required property Bar.BarWrapper bar
+    required property Item dock
 
     ExclusionZone {
         anchors.left: true
@@ -25,8 +26,10 @@ Scope {
         anchors.right: true
     }
 
+    // Reserve room for the Yui dock so windows don't go under it
     ExclusionZone {
         anchors.bottom: true
+        exclusiveZone: contentItem.Config.border.thickness + root.dock.implicitHeight
     }
 
     component ExclusionZone: StyledWindow {

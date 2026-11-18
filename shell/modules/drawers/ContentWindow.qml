@@ -18,6 +18,7 @@ StyledWindow {
     id: root
 
     readonly property alias bar: bar
+    readonly property alias dock: panels.dock
     readonly property alias interactionWrapper: interactions
 
     readonly property ScreenState screenState: ShellState.forScreen(screen)
@@ -183,6 +184,11 @@ StyledWindow {
         }
 
         PanelBg {
+            id: dockBg
+            panel: panels.dock
+            deformAmount: 0.1
+        }
+        PanelBg {
             id: launcherBg
 
             panel: panels.launcher
@@ -273,6 +279,10 @@ StyledWindow {
 
             dashboard.transform: Matrix4x4 {
                 matrix: dashBg.deformMatrix
+            }
+            dock.fullscreen: root.hasFullscreen
+            dock.transform: Matrix4x4 {
+                matrix: dockBg.deformMatrix
             }
             launcher.transform: Matrix4x4 {
                 matrix: launcherBg.deformMatrix

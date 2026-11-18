@@ -73,12 +73,14 @@ It provides the bar, launcher (tap `Super`), dashboard, notifications sidebar, o
 displays, session menu, lock screen and wallpaper-based colors. It runs as the `yui-shell`
 user service (`qs -c caelestia`).
 
-Yui adds, in `desktop/dock` (`yui-dock` service):
+Yui adds:
 
-- **Dock**: pinned and running apps, magnification on hover, launch bounce, running/focused
-  indicators. Minimized windows appear on the right with a thumbnail: left click restores,
-  right click closes.
-- **Window switcher**: `Alt+Tab` / `Alt+Shift+Tab` show live previews of every window, most
+- **Dock** (`shell/modules/dock`): a drawer that grows out of the bottom border like the
+  other panels, with the same wallpaper-based colors. Pinned and running apps, magnification
+  on hover, launch bounce, running/focused indicators. Minimized windows appear on the right
+  with a thumbnail: left click restores, right click closes. It slides away while the
+  launcher is open and in fullscreen, and windows don't go under it.
+- **Window switcher** (`desktop/dock`, `yui-dock` service): `Alt+Tab` / `Alt+Shift+Tab` show live previews of every window, most
   recent first. Release `Alt` or click a preview to switch; `Esc` cancels.
 - **IPC**: `qs -p /usr/share/yui/dock ipc call switcher next|prev|commit|cancel`, the entry
   point for scripts and the future AI layer.
@@ -118,7 +120,8 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] Floating windows with title bars (minimize, maximize, close)
 - [x] Yui Shell phase 1: dock and window switcher (Quickshell)
 - [x] Yui Shell based on Caelestia (bar, launcher, dashboard, notifications, lock)
-- [ ] Port the dock and window switcher into the Yui Shell's visual language
+- [x] Dock as a native Yui Shell drawer
+- [ ] Window switcher in the Yui Shell's visual language
 - [ ] Overview + search (Mission Control / Spotlight)
 - [ ] Rebrand the shell (names, colors, identity)
 - [ ] Yui pacman repository (GitHub Releases + Actions), including hyprbars from AUR

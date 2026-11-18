@@ -1,5 +1,5 @@
 [Unit]
-Description=Yui dock and window switcher
+Description=Yui window switcher (Alt+Tab)
 Documentation=https://github.com/morais90/yui
 PartOf=graphical-session.target
 After=graphical-session.target
