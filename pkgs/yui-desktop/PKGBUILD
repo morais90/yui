@@ -1,6 +1,6 @@
 # Maintainer: Willian Morais
 pkgname=yui-desktop
-pkgver=0.7.0
+pkgver=0.7.1
 pkgrel=1
 pkgdesc="Yui desktop: Hyprland defaults, idle, helper scripts"
 arch=('any')
