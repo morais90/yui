@@ -116,13 +116,12 @@ Scope {
                     Drag.dragType: Drag.Automatic
                     Drag.supportedActions: Qt.CopyAction
                     Drag.mimeData: ({
-                            "text/uri-list": `file://${root.path}`
+                            "text/uri-list": `${encodeURI(`file://${root.path}`)}\r\n`,
+                            "text/plain": root.path
                         })
-                    Drag.imageSource: `file://${root.path}`
-                    Drag.onDragFinished: dropAction => {
-                        if (dropAction === Qt.CopyAction)
-                            win.close();
-                    }
+                    // Gone once dropped, like macOS (some apps accept the file
+                    // but report no action, so don't rely on the result)
+                    Drag.onDragFinished: win.close()
                 }
 
                 MouseArea {
@@ -133,8 +132,11 @@ Scope {
                     cursorShape: Qt.PointingHandCursor
                     drag.target: dragProxy
 
+                    // The drag icon is the small card, not the full-size picture
+                    onPressed: card.grabToImage(result => dragProxy.Drag.imageSource = result.url, Qt.size(card.width / 2, card.height / 2))
+
                     onClicked: {
-                        Quickshell.execDetached(["xdg-open", root.path]);
+                        Apps.open(root.path);
                         win.close();
                     }
                 }
