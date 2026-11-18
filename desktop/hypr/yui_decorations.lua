@@ -1,5 +1,5 @@
--- Yui window decorations: floating windows by default and title bars with
--- minimize / maximize / close buttons (hyprbars plugin).
+-- Yui window decorations: floating windows by default and macOS-style title
+-- bars (hyprbars plugin): traffic-light buttons on the left, centered title.
 
 ------------------ FLOATING BY DEFAULT ------------------
 -- New windows open floating, at the size the app asks for, centered,
@@ -39,35 +39,37 @@ end
 hl.config({
     plugin = {
         hyprbars = {
-            bar_height            = 28,
-            bar_color             = "rgba(1e2030f2)",
-            ["col.text"]          = "rgb(cdd6f4)",
-            bar_text_font         = "Noto Sans",
-            bar_text_size         = 11,
-            bar_text_align        = "left",
+            bar_height            = 32,
+            bar_color             = "rgb(201f23)",
+            ["col.text"]          = "rgb(c8c5d1)",
+            bar_text_font         = "Rubik Medium",
+            bar_text_size         = 10,
+            bar_text_align        = "center",
+            bar_buttons_alignment = "left",
             bar_padding           = 12,
             bar_button_padding    = 8,
             bar_part_of_window    = true,
             bar_precedence_over_border = true,
             icon_on_hover         = true,
-            inactive_button_color = "rgb(585b70)",
+            inactive_button_color = "rgb(47464f)",  -- grey lights on inactive windows
             on_double_click       = [[yui-maximize]],
         },
     },
 })
 
--- Buttons are added right to left: close, maximize, minimize
+-- Traffic lights (macOS colors), left to right: close, minimize, zoom.
+-- Symbols show on hover. Buttons are added from the outer edge inwards.
 hl.plugin.hyprbars.add_button({
-    bg_color = "rgb(f38ba8)", fg_color = "rgb(1e1e2e)", size = 14, icon = "󰖭",
+    bg_color = "rgb(ff5f57)", fg_color = "rgb(4d0000)", size = 13, icon = "",
     action = [[hyprctl dispatch 'hl.dsp.window.close()']],
 })
 hl.plugin.hyprbars.add_button({
-    bg_color = "rgb(a6e3a1)", fg_color = "rgb(1e1e2e)", size = 14, icon = "󰖯",
-    action = [[yui-maximize]],
+    bg_color = "rgb(febc2e)", fg_color = "rgb(5a3a00)", size = 13, icon = "",
+    action = "yui-minimize",
 })
 hl.plugin.hyprbars.add_button({
-    bg_color = "rgb(f9e2af)", fg_color = "rgb(1e1e2e)", size = 14, icon = "󰖰",
-    action = "yui-minimize",
+    bg_color = "rgb(28c840)", fg_color = "rgb(004d00)", size = 13, icon = "",
+    action = [[yui-maximize]],
 })
 
 -- No title bar on the launcher, menus and other shell windows

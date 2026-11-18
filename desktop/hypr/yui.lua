@@ -79,11 +79,12 @@ hl.config({
         gaps_in  = 5,
         gaps_out = 20,
 
-        border_size = 2,
+        -- macOS-like: a hairline border, depth comes from the shadow
+        border_size = 1,
 
         col = {
-            active_border   = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 45 },
-            inactive_border = "rgba(595959aa)",
+            active_border   = "rgba(ffffff26)",
+            inactive_border = "rgba(ffffff14)",
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
@@ -96,18 +97,21 @@ hl.config({
     },
 
     decoration = {
-        rounding       = 10,
+        rounding       = 12,
         rounding_power = 2,
 
         -- Change transparency of focused and unfocused windows
         active_opacity   = 1.0,
         inactive_opacity = 1.0,
 
+        -- Large, soft shadow; lighter on inactive windows (macOS-like depth)
         shadow = {
-            enabled      = true,
-            range        = 4,
-            render_power = 3,
-            color        = 0xee1a1a1a,
+            enabled        = true,
+            range          = 40,
+            render_power   = 3,
+            offset         = { 0, 12 },
+            color          = 0x70000000,
+            color_inactive = 0x38000000,
         },
 
         blur = {
@@ -136,8 +140,9 @@ hl.curve("easy",           { type = "spring", mass = 1, stiffness = 238.1191, da
 hl.animation({ leaf = "global",        enabled = true,  speed = 10,   bezier = "default" })
 hl.animation({ leaf = "border",        enabled = true,  speed = 5.39, bezier = "easeOutQuint" })
 hl.animation({ leaf = "windows",       enabled = true,  speed = 4.79, spring = "easy" })
-hl.animation({ leaf = "windowsIn",     enabled = true,  speed = 4.1,  spring = "easy",         style = "popin 87%" })
-hl.animation({ leaf = "windowsOut",    enabled = true,  speed = 1.49, bezier = "linear",       style = "popin 87%" })
+-- Windows pop in/out with a short scale + fade, like macOS
+hl.animation({ leaf = "windowsIn",     enabled = true,  speed = 3.2,  bezier = "easeOutQuint", style = "popin 90%" })
+hl.animation({ leaf = "windowsOut",    enabled = true,  speed = 2.2,  bezier = "easeOutQuint", style = "popin 90%" })
 hl.animation({ leaf = "fadeIn",        enabled = true,  speed = 1.73, bezier = "almostLinear" })
 hl.animation({ leaf = "fadeOut",       enabled = true,  speed = 1.46, bezier = "almostLinear" })
 hl.animation({ leaf = "fade",          enabled = true,  speed = 3.03, bezier = "quick" })
@@ -225,7 +230,9 @@ hl.config({
         kb_options = "",
         kb_rules   = "",
 
-        follow_mouse = 1,
+        -- Click to focus (macOS): hovering doesn't steal keyboard focus,
+        -- but scrolling still goes to the window under the pointer
+        follow_mouse = 2,
 
         sensitivity = 0, -- -1.0 - 1.0, 0 means no modification.
 
