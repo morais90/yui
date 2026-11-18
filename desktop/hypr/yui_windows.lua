@@ -66,3 +66,12 @@ hl.window_rule({
     match = { class = ".*" },
     idle_inhibit = "fullscreen",
 })
+
+-- Apps with their own title bar (Chrome, GTK apps) ask to be maximized:
+-- turn that into the Yui zoom, so they never enter Hyprland's maximized
+-- layer (which keeps floating windows stuck above them).
+hl.on("window.fullscreen", function(w)
+    if w.fullscreen == 1 then
+        hl.exec_cmd("yui-maximize " .. w.address)
+    end
+end)

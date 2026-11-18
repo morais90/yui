@@ -37,6 +37,10 @@ if ! grep -qs '/usr/share/yui/ghostty' "$config/ghostty/config.ghostty"; then
     echo "  created $config/ghostty/config.ghostty"
 fi
 
+# macOS-style window buttons (close, minimize, zoom on the left) for apps
+# that draw their own title bar, like Chrome and GTK apps
+gsettings set org.gnome.desktop.wm.preferences button-layout 'close,minimize,maximize:' 2>/dev/null || true
+
 # Configs that override Yui's defaults (only with --reset)
 if [[ "${1:-}" == "--reset" ]]; then
     move_to_backup "$config/hypr/hypridle.conf"

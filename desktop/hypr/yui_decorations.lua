@@ -83,6 +83,14 @@ hl.plugin.hyprbars.add_button({
     action = [[yui-maximize]],
 })
 
+-- Chromium-based browsers draw their own macOS-like title bar: tabs with the
+-- window buttons on the left (button layout set by yui-setup)
+hl.window_rule({
+    name  = "no-bar-browsers",
+    match = { class = "^(google-chrome|chromium|brave-browser|microsoft-edge)$" },
+    ["hyprbars:no_bar"] = true,
+})
+
 -- No title bar on the launcher, menus and other shell windows
 hl.window_rule({
     name  = "no-bar-shell",
