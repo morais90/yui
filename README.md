@@ -94,6 +94,14 @@ Yui adds:
 - **IPC**: `qs -c caelestia ipc call switcher next|prev|commit|cancel`, `... overview toggle`, `... spotlight search <text>`, the entry
   point for scripts and the future AI layer.
 
+## Terminal
+
+Ghostty runs **fish** with the **Starship** prompt (Tokyo Night preset). Yui's defaults live in
+`/usr/share/fish/vendor_conf.d/yui.fish` and `/usr/share/yui/starship/starship.toml`; your own
+`~/.config/fish/config.fish` and `~/.config/starship.toml` override them
+(`starship preset --list` shows other themes). Scripts keep their `#!/bin/bash` shebangs.
+Make fish your login shell with `chsh -s /usr/bin/fish`.
+
 ## Session startup
 
 The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens in three layers:

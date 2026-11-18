@@ -1,6 +1,6 @@
 # Maintainer: Willian Morais
 pkgname=yui-desktop
-pkgver=0.8.1
+pkgver=0.9.0
 pkgrel=1
 pkgdesc="Yui desktop: Hyprland defaults, idle, helper scripts"
 arch=('any')
@@ -14,6 +14,8 @@ depends=(
     yui-shell yui-hyprland-plugins quickshell-git hypridle wofi
     network-manager-applet blueman pavucontrol
     # tools used by keybinds and scripts
+    # terminal: fish with the Starship prompt (Yui theme in vendor_conf.d)
+    fish starship
     # archives: Ark (Dolphin's "Extract here", opens .zip/.7z/.tar) and its backends
     ark unzip zip 7zip
     ghostty xdg-terminal-exec dolphin grim slurp wl-clipboard cliphist brightnessctl playerctl
@@ -33,6 +35,8 @@ package() {
     install -Dm644 -t "$pkgdir/usr/share/yui/ghostty"     "$src"/ghostty/*
     install -Dm644 -t "$pkgdir/usr/share/yui/skel"        "$src"/skel/hyprland.lua
     install -Dm644 -t "$pkgdir/usr/share/yui/skel/ghostty" "$src"/skel/ghostty/config.ghostty
+    install -Dm644 "$src/fish/yui.fish"                    "$pkgdir/usr/share/fish/vendor_conf.d/yui.fish"
+    install -Dm644 "$src/starship/starship.toml"           "$pkgdir/usr/share/yui/starship/starship.toml"
     install -Dm644 "$src/skel/hyprland.lua"               "$pkgdir/etc/skel/.config/hypr/hyprland.lua"
     install -Dm644 "$src/skel/ghostty/config.ghostty"     "$pkgdir/etc/skel/.config/ghostty/config.ghostty"
     install -Dm644 "$src/xdg/xdg-terminals.list"          "$pkgdir/etc/xdg/xdg-terminals.list"
