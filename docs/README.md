@@ -23,6 +23,7 @@ This folder describes **what Yui is like to use**, not how it is built. The tech
   - [Switching](experience/switching.md): Alt+Tab and Mission Control.
   - [Settings](experience/settings.md): the Settings app and its pages.
   - [Terminal](experience/terminal.md): Ghostty, fish and the prompt.
+  - [Screenshots](experience/screenshots.md): one key to capture, save and copy.
   - [Apps](experience/apps.md): the apps Yui ships with and what they open.
 
 ## Page template

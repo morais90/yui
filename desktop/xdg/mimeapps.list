@@ -1,5 +1,5 @@
 # Yui default apps (system-wide; your ~/.config/mimeapps.list wins).
-# Text and code open in Zed (docs/experience/apps.md).
+# Text and code open in Zed, pictures in Loupe (docs/experience/apps.md).
 [Default Applications]
 text/plain=dev.zed.Zed.desktop
 text/markdown=dev.zed.Zed.desktop
@@ -45,3 +45,13 @@ application/x-zerosize=dev.zed.Zed.desktop
 application/x-ini=dev.zed.Zed.desktop
 text/x-ini=dev.zed.Zed.desktop
 application/x-wine-extension-ini=dev.zed.Zed.desktop
+image/png=org.gnome.Loupe.desktop
+image/jpeg=org.gnome.Loupe.desktop
+image/gif=org.gnome.Loupe.desktop
+image/webp=org.gnome.Loupe.desktop
+image/bmp=org.gnome.Loupe.desktop
+image/tiff=org.gnome.Loupe.desktop
+image/avif=org.gnome.Loupe.desktop
+image/heic=org.gnome.Loupe.desktop
+image/svg+xml=org.gnome.Loupe.desktop
+image/x-icon=org.gnome.Loupe.desktop

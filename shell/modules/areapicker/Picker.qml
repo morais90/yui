@@ -18,7 +18,7 @@ MouseArea {
 
     property bool onClient
 
-    property real realBorderWidth: onClient ? (Hypr.options["general:border_size"] ?? 1) : 2
+    property real realBorderWidth: 2
     property real realRounding: onClient ? (Hypr.options["decoration:rounding"] ?? 0) : 0
 
     property real ssx
@@ -75,20 +75,24 @@ MouseArea {
                 sy = cy;
                 ex = cx + cw;
                 ey = cy + ch;
-                break;
+                return;
             }
         }
+        onClient = false;
+        sx = 0;
+        sy = 0;
+        ex = screen.width;
+        ey = screen.height;
     }
 
+    // Save to Pictures/Screenshots, copy to the clipboard, then show the thumbnail
     function save(): void {
-        const tmpfile = Qt.resolvedUrl(`/tmp/caelestia-picker-${Quickshell.processId}-${Date.now()}.png`);
-        CUtils.saveItem(screencopy, tmpfile, Qt.rect(Math.ceil(rsx), Math.ceil(rsy), Math.floor(sw), Math.floor(sh)), path => {
-            if (root.loader.clipboardOnly) {
-                Quickshell.execDetached(["sh", "-c", "wl-copy --type image/png < " + path]);
-                Quickshell.execDetached(["notify-send", "-a", "caelestia-cli", "-i", path, Tr.tr("Screenshot taken"), Tr.tr("Screenshot copied to clipboard")]);
-            } else {
-                Quickshell.execDetached(["swappy", "-f", path]);
-            }
+        const name = `Screenshot ${Qt.formatDateTime(new Date(), "yyyy-MM-dd 'at' HH.mm.ss")}.png`;
+        const file = Qt.resolvedUrl(`${root.loader.folder}/${name}`);
+        const rect = Qt.rect(Math.ceil(rsx), Math.ceil(rsy), Math.floor(sw), Math.floor(sh));
+        CUtils.saveItem(screencopy, file, rect, path => {
+            Quickshell.execDetached(["sh", "-c", "wl-copy --type image/png < \"$1\"", "sh", path]);
+            root.loader.captured(path, root.screen, rect.width / Math.max(1, rect.height));
             closeAnim.start();
         });
     }
@@ -119,10 +123,10 @@ MouseArea {
             ex = cx + ipc.size[0];
             ey = cy + ipc.size[1];
         } else {
-            sx = screen.width / 2 - 100;
-            sy = screen.height / 2 - 100;
-            ex = screen.width / 2 + 100;
-            ey = screen.height / 2 + 100;
+            sx = 0;
+            sy = 0;
+            ex = screen.width;
+            ey = screen.height;
         }
     }
 
@@ -148,13 +152,13 @@ MouseArea {
         const x = event.x;
         const y = event.y;
 
-        if (pressed) {
+        if (pressed && Math.abs(x - ssx) + Math.abs(y - ssy) > 6) {
             onClient = false;
             sx = ssx;
             sy = ssy;
             ex = x;
             ey = y;
-        } else {
+        } else if (!pressed) {
             checkClientRects(x, y);
         }
     }
@@ -231,17 +235,44 @@ MouseArea {
         }
     }
 
-    StyledRect {
+    // Dim everything outside the selection (four plain rectangles: no shader,
+    // and it stands out on any wallpaper)
+    Item {
         id: overlay
 
         anchors.fill: parent
-        color: Colours.palette.m3secondaryContainer
-        opacity: 0.3
 
-        layer.enabled: true
-        layer.effect: Mask {
-            maskSource: selectionWrapper
-            maskInverted: true
+        Rectangle {
+            color: "black"
+            opacity: 0.45
+            x: 0
+            y: 0
+            width: parent.width
+            height: Math.max(0, root.rsy)
+        }
+        Rectangle {
+            color: "black"
+            opacity: 0.45
+            x: 0
+            y: root.rsy + root.sh
+            width: parent.width
+            height: Math.max(0, parent.height - y)
+        }
+        Rectangle {
+            color: "black"
+            opacity: 0.45
+            x: 0
+            y: root.rsy
+            width: Math.max(0, root.rsx)
+            height: root.sh
+        }
+        Rectangle {
+            color: "black"
+            opacity: 0.45
+            x: root.rsx + root.sw
+            y: root.rsy
+            width: Math.max(0, parent.width - x)
+            height: root.sh
         }
     }
 

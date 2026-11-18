@@ -12,6 +12,7 @@ piece from the first boot.
 | Terminal | Ghostty | see [Terminal](terminal.md) |
 | Files | Dolphin | folders |
 | Text and code | Zed | `.txt`, Markdown, config files, scripts and source code |
+| Images | Loupe | `.png`, `.jpg`, screenshots |
 | Archives | Ark | `.zip`, `.7z`, `.tar` (and "Extract here" in Dolphin) |
 
 Double-clicking a file opens it in the app above; you never land in a terminal editor by

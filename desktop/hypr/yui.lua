@@ -308,10 +308,9 @@ hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
--- Screenshots: Print = region -> clipboard, SHIFT+Print = full screen -> file
-hl.bind("Print",         hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy'))
-hl.bind("SHIFT + Print", hl.dsp.exec_cmd('d="$(xdg-user-dir PICTURES)/Screenshots"; mkdir -p "$d" && grim "$d/$(date +%F_%H-%M-%S).png"'))
-hl.bind(mainMod .. " + SHIFT + Print", hl.dsp.exec_cmd('d="$(xdg-user-dir PICTURES)/Screenshots"; mkdir -p "$d" && grim -g "$(slurp)" "$d/$(date +%F_%H-%M-%S).png"'))
+-- Screenshots: Print opens the shell's picker (window, screen or area); the
+-- picture is saved to Pictures/Screenshots and copied (docs/experience/screenshots.md)
+hl.bind("Print", hl.dsp.global("caelestia:screenshot"))
 
 -- Lock screen
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("loginctl lock-session"))

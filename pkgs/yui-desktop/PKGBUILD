@@ -1,6 +1,6 @@
 # Maintainer: Willian Morais
 pkgname=yui-desktop
-pkgver=0.12.0
+pkgver=0.13.0
 pkgrel=1
 pkgdesc="Yui desktop: Hyprland defaults, idle, helper scripts"
 arch=('any')
@@ -20,6 +20,8 @@ depends=(
     ark unzip zip 7zip
     # text and code editor (default for text files, see desktop/xdg/mimeapps.list)
     zed
+    # image viewer (screenshots and pictures open here)
+    loupe
     ghostty xdg-terminal-exec dolphin grim slurp wl-clipboard cliphist brightnessctl playerctl
     xdg-user-dirs xdg-utils jq
     # title bars (AUR for now; will be built into the Yui repository)

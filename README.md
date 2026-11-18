@@ -132,7 +132,7 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 | `Alt+Tab` / `Super+Tab` | Window switcher / previous workspace |
 | `Super+G` | Group windows into tabs |
 | `Super+Shift+V` | Clipboard history |
-| `Print` / `Shift+Print` | Region screenshot (copy) / full screenshot (save) |
+| `Print` | Screenshot: click a window or the screen, or drag an area; saved and copied |
 
 ## Roadmap
 
