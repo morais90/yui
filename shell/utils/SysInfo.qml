@@ -61,7 +61,8 @@ Singleton {
             root.osIdLike = fd("ID_LIKE").split(" ");
 
             const logo = Quickshell.iconPath(fd("LOGO"), true);
-            if (GlobalConfig.general.logo === "caelestia") {
+            // Yui: its own logo unless the user picks another one
+            if (!GlobalConfig.general.logo || ["yui", "caelestia"].includes(GlobalConfig.general.logo)) {
                 root.osLogo = Qt.resolvedUrl(`${Quickshell.shellDir}/assets/logo.svg`);
                 root.isDefaultLogo = true;
             } else if (GlobalConfig.general.logo) {

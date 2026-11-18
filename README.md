@@ -123,7 +123,8 @@ The session is **Hyprland (uwsm-managed)**, started by SDDM. Autostart happens i
 - [x] Dock as a native Yui Shell drawer
 - [x] Window switcher in the Yui Shell's visual language
 - [ ] Overview + search (Mission Control / Spotlight)
-- [ ] Rebrand the shell (names, colors, identity)
+- [x] Yui logo in the bar, dashboard, lock screen and About page
+- [ ] Rebrand the remaining identifiers (`caelestia` command, config paths) and os-release
 - [ ] Yui pacman repository (GitHub Releases + Actions), including hyprbars from AUR
 - [ ] btrfs snapshots (snapper, snap-pac, grub-btrfs)
 - [ ] Test installation in a VM
