@@ -1,14 +1,10 @@
 -- Yui Shell integration (shell/ = Caelestia fork with the Yui dock and switcher).
 -- Most features are reachable with the mouse; these keys are shortcuts.
 
-local release = { release = true }
-
--- Spotlight (shell/modules/spotlight): tap Super alone, Super+Space, or
--- click the Yui logo on the bar. Super+R keeps the Caelestia launcher
--- (wallpapers, colour schemes, commands).
-hl.bind("SUPER + SUPER_L", hl.dsp.global("caelestia:spotlight"), release)
-hl.bind("SUPER + space",   hl.dsp.global("caelestia:spotlight"))
-hl.bind("SUPER + R",       hl.dsp.global("caelestia:launcher"))
+-- Spotlight opens only from the Y on the bar (docs/principles.md, one way to
+-- do each thing). Super+R keeps the Caelestia launcher until its parts move
+-- into Spotlight and Settings (docs/experience/spotlight.md).
+hl.bind("SUPER + R", hl.dsp.global("caelestia:launcher"))
 
 -- Panels
 hl.bind("CTRL + ALT + Delete", hl.dsp.global("caelestia:session"))     -- power / session menu

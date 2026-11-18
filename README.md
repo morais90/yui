@@ -5,6 +5,9 @@
 
 Hobby project. Yui is shipped as Arch packages; a bootable ISO will come later.
 
+**Product documentation** (what Yui is like to use, its principles and the decisions behind
+each part) lives in [`docs/`](docs/README.md). Changes start there, before the code.
+
 ## How it works
 
 Yui is distributed as **Arch packages** (`yui-*`). A machine running Yui does not need this repository: it only has the packages, updated by `pacman`.
@@ -88,8 +91,7 @@ Yui adds:
 - **Mission Control** (`shell/modules/overview`): `Super+↑` or a three-finger swipe up shows
   every window of each screen side by side, zooming out from their real positions. Click a
   window to bring it to the front; `Esc` or click the background to go back.
-- **Spotlight** (`shell/modules/spotlight`): click the Yui logo on the bar, tap `Super` or press
-  `Super+Space`. One box for apps, calculations (qalc), settings pages, files in your home folder
+- **Spotlight** (`shell/modules/spotlight`): click the Y on the bar. One box for apps, calculations (qalc), settings pages, files in your home folder
   and a web search. `Super+R` keeps the Caelestia launcher (wallpapers, schemes, commands).
 - **Displays** (Settings > Displays, `shell/modules/nexus/pages/DisplayPage.qml`): drag the screens to
   arrange them, pick resolution, refresh rate, scale and rotation. Changes apply live and revert
