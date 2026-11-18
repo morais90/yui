@@ -40,6 +40,10 @@ if [[ $zoomed == true ]]; then
 else
     # Leave Hyprland fullscreen / maximized states first
     if [[ $(jq -r .fullscreen <<<"$client") != 0 ]]; then
+        # Let the app settle in the maximized state before leaving it: apps
+        # like Chrome miss a maximize that is undone right away and stay
+        # convinced they are maximized (their button then only "restores")
+        sleep 0.35
         dispatch "hl.dsp.window.fullscreen({ window = \"$win\", mode = \"maximized\", action = \"unset\" })"
         dispatch "hl.dsp.window.fullscreen({ window = \"$win\", mode = \"fullscreen\", action = \"unset\" })"
         client=$(hyprctl clients -j | jq -c --arg a "$addr" '.[] | select(.address == $a)')

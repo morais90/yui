@@ -9,12 +9,23 @@
 //   yuisnap>>apply,<zone>,<monitor>,<address>   window dropped on a zone
 //
 // zone: none | left | right | top | topleft | topright | bottomleft | bottomright
+//
+// It also fixes stacking around maximized windows (macOS-like): Hyprland keeps
+// floating windows opened over a maximized one above it even when the
+// maximized window is clicked. Focusing the maximized window now sends the
+// others behind it; focusing one of them brings it back in front.
 
 #include <format>
 #include <string>
 
 #include <hyprland/src/Compositor.hpp>
+#include <hyprland/src/desktop/state/WindowState.hpp>
 #include <hyprland/src/desktop/view/window/Window.hpp>
+#include <hyprland/src/desktop/view/window/WindowFullscreenPolicy.hpp>
+#include <hyprland/src/desktop/view/window/WindowPresentation.hpp>
+#include <hyprland/src/event/EventBus.hpp>
+#include <hyprland/src/managers/fullscreen/FullscreenController.hpp>
+#include <hyprland/src/render/Renderer.hpp>
 #include <hyprland/src/ipc/s2/S2.hpp>
 #include <hyprland/src/layout/LayoutManager.hpp>
 #include <hyprland/src/managers/input/InputManager.hpp>
@@ -108,6 +119,35 @@ static void onEnded() {
     g_state.window.reset();
 }
 
+static void setOverFullscreen(PHLWINDOW w, bool allowed) {
+    if (w->fullscreenPolicy().allowedOverFullscreen() == allowed)
+        return;
+    w->fullscreenPolicy().setAllowedOverFullscreen(allowed);
+    w->updateFullscreenInputState();
+    // Windows below a fullscreen/maximized one are faded out by Hyprland
+    *w->presentation().alpha(Desktop::View::WINDOW_ALPHA_FULLSCREEN) = allowed ? 1.F : 0.F;
+    g_pHyprRenderer->damageWindow(w, true);
+}
+
+static void onActive(PHLWINDOW focused) {
+    if (!focused || !focused->m_workspace)
+        return;
+
+    const auto& fs  = Fullscreen::controller();
+    const auto  max = fs->getFullscreenWindow(focused->m_workspace, std::nullopt);
+    // Only maximized windows; real fullscreen (games, videos) keeps Hyprland's behaviour
+    if (!max || !fs->isFullscreen(max, Fullscreen::FSMODE_MAXIMIZED))
+        return;
+
+    if (focused == max) {
+        for (const auto& w : Desktop::windowState()->windows()) {
+            if (w != max && w->mapped() && w->m_workspace == max->m_workspace)
+                setOverFullscreen(w, false);
+        }
+    } else
+        setOverFullscreen(focused, true);
+}
+
 APICALL EXPORT std::string PLUGIN_API_VERSION() {
     return HYPRLAND_API_VERSION;
 }
@@ -123,8 +163,9 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle) {
 
     static auto motion = g_layoutManager->dragController()->m_events.motion.listen([] { onMotion(); });
     static auto ended  = g_layoutManager->dragController()->m_events.ended.listen([] { onEnded(); });
+    static auto active = Event::bus()->m_events.window.active.listen([](PHLWINDOW w, Desktop::eFocusReason) { onActive(w); });
 
-    return {"yui-snap", "macOS-style window snapping for Yui", "Yui", "0.1"};
+    return {"yui-snap", "macOS-style window snapping and stacking for Yui", "Yui", "0.2"};
 }
 
 APICALL EXPORT void PLUGIN_EXIT() {

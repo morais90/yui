@@ -67,14 +67,10 @@ hl.window_rule({
     idle_inhibit = "fullscreen",
 })
 
--- Apps with their own title bar (Chrome, GTK apps) ask to be maximized:
--- turn that into the Yui zoom, so they never enter Hyprland's maximized
--- layer (which keeps floating windows stuck above them).
-hl.on("window.fullscreen", function(w)
-    if w.fullscreen == 1 then
-        hl.exec_cmd("yui-maximize " .. w.address)
-    end
-end)
+-- Apps with their own title bar (Chrome, GTK apps) use Hyprland's native
+-- maximized state, so they always know whether they are maximized and their
+-- maximize/restore button works. The yui-snap plugin fixes the stacking
+-- around maximized windows (clicking one sends the others behind it).
 
 -- Never move the pointer on its own (macOS): focusing a window from the
 -- dock, Alt+Tab, Mission Control or a keybind leaves the cursor where it is
